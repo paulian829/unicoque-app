@@ -11,14 +11,14 @@ import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 let data = {
     randomid1: {
         Name: 'Cavite School',
-        logoURL:'https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/logo%2FOiglKaN1qIPJGo6Y5JxCg4ZMheu1.png?alt=media&token=a31a248a-68cf-4d0b-ab33-e99e89dd6e42',
+        logoURL: 'https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/logo%2FOiglKaN1qIPJGo6Y5JxCg4ZMheu1.png?alt=media&token=a31a248a-68cf-4d0b-ab33-e99e89dd6e42',
         Address: {
             City: 'random city'
         }
     },
     randomid2: {
         Name: 'Rizal School',
-        logoURL:'https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/logo%2FOiglKaN1qIPJGo6Y5JxCg4ZMheu1.png?alt=media&token=a31a248a-68cf-4d0b-ab33-e99e89dd6e42',
+        logoURL: 'https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/logo%2FOiglKaN1qIPJGo6Y5JxCg4ZMheu1.png?alt=media&token=a31a248a-68cf-4d0b-ab33-e99e89dd6e42',
 
         Address: {
             City: 'random city'
@@ -26,7 +26,7 @@ let data = {
     },
     randomid3: {
         Name: 'Quezon School',
-        logoURL:'https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/logo%2FOiglKaN1qIPJGo6Y5JxCg4ZMheu1.png?alt=media&token=a31a248a-68cf-4d0b-ab33-e99e89dd6e42',
+        logoURL: 'https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/logo%2FOiglKaN1qIPJGo6Y5JxCg4ZMheu1.png?alt=media&token=a31a248a-68cf-4d0b-ab33-e99e89dd6e42',
 
         Address: {
             City: 'random city'
@@ -42,32 +42,27 @@ export default function Welcome({ navigation }) {
 
 
     useEffect(() => {
-        console.log('runs on startup screen')
-       
+
     })
 
     useEffect(() => {
 
-        console.log("searching!",searchValue)
         let results = {}
         let search = searchValue
         if (search.length === 0) {
-            console.log("Reset school list")
             setSchoolData(data)
             return
         }
-        for (let item in originalData){
-            console.log()
+        for (let item in originalData) {
             let schoolName = originalData[item].Name
             schoolName = schoolName.toLowerCase()
-            console.log(schoolName)
-            if (schoolName.startsWith(search.toLowerCase())){
+            if (schoolName.startsWith(search.toLowerCase())) {
                 results[item] = originalData[item]
             }
         }
         setSchoolData(results)
 
-        
+
     }, [searchValue])
 
     const nav = useNavigation();
@@ -94,9 +89,9 @@ export default function Welcome({ navigation }) {
         navigation.navigate(screen)
     }
 
-    const tifOptions = Object.keys(schoolData).map(key => 
-        
-        <Card style={{ marginBottom: 20 }} onPress={() => alert('test')}>
+    const tifOptions = Object.keys(schoolData).map(key =>
+
+        <Card style={{ marginBottom: 20 }} onPress={() => alert('test')} key={key}>
             <Card.Cover source={{ uri: schoolData[key].logoURL }} />
             <Card.Content>
                 <Title>{schoolData[key].Name}</Title>
@@ -118,11 +113,7 @@ export default function Welcome({ navigation }) {
                         inputContainerStyle={{ backgroundColor: 'white' }}
                     />
                     <View style={{ paddingVertical: 20 }}>
-
-                    </View>
-                    <View>
                         {tifOptions}
-
                     </View>
                 </View>
             </ScrollView>
