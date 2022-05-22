@@ -5,6 +5,7 @@ import ForgotPassword from './screens/forgotPassword'
 import Welcome from './screens/welcome'
 import Profile from './screens/profile'
 import Search from './screens/search'
+import SchoolView from './screens/schoolView'
 import 'react-native-gesture-handler'
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -47,6 +48,8 @@ function Dashboard() {
       />
       <Drawer.Screen name="Profile" component={Profile} options={headerLogo()} />
       <Drawer.Screen name="Search" component={Search} options={headerLogo()} />
+      <Drawer.Screen name="SchoolView" component={SchoolView} options={headerLogo()} />
+
 
     </Drawer.Navigator>
   );

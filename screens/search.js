@@ -94,7 +94,7 @@ export default function Welcome({ navigation }) {
 
     const tifOptions = Object.keys(schoolData).map(key =>
 
-        <Card style={{ marginBottom: 20 }} onPress={() => alert('test')} key={key}>
+        <Card style={{ marginBottom: 20 }} onPress={() => clickSchool('SchoolView')} key={key}>
             <Card.Cover source={{ uri: schoolData[key].logoURL }} />
             <Card.Content>
                 <Title>{schoolData[key].Name}</Title>
