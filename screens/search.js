@@ -88,6 +88,9 @@ export default function Welcome({ navigation }) {
     const navigate = (screen) => {
         navigation.navigate(screen)
     }
+    const clickSchool = (screen, key) => {
+        navigation.navigate(screen, { key: key })
+    }
 
     const tifOptions = Object.keys(schoolData).map(key =>
 
@@ -124,7 +127,6 @@ export default function Welcome({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        // alignItems: 'center',
         flex: 1,
         backgroundColor: '#EFB679'
     },
