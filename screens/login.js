@@ -3,8 +3,7 @@ import { StyleSheet, Text, View, Image, Pressable, TextInput, TouchableHighlight
 import { Checkbox } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-
-export default function App({navigation}) {
+export default function App({ navigation }) {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const [activeLogin, setActiveLogin] = useState('login')
     const [email, setEmail] = useState(null)
@@ -16,7 +15,7 @@ export default function App({navigation}) {
 
     const navigate = (screen) => {
         navigation.navigate(screen)
-      }
+    }
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
@@ -28,6 +27,7 @@ export default function App({navigation}) {
         const keyboardDidHideListener = Keyboard.addListener(
             'keyboardDidHide',
             () => {
+                Keyboard.dismiss
                 setKeyboardVisible(false); // or some other action
             }
         );
@@ -54,17 +54,19 @@ export default function App({navigation}) {
         }
     }
     const goToForgotPassword = () => {
-        alert('ttest')
+        navigation.navigate('ForgotPassword')
+
     }
     const login = () => {
-        alert(email)
+        navigation.navigate('Dashboard')
+
     }
 
     const register = () => {
         alert(`${newEmail} ${newPassword} ${checked}`)
     }
     return (
-        <KeyboardAwareScrollView style={styles.container} resetScrollToCoords={{ x: 0, y: 0 }} contentContainerStyle={styles.align} scrollEnabled={false} keyboardShouldPersistTaps={'always'}>
+        <KeyboardAwareScrollView style={styles.container} resetScrollToCoords={{ x: 0, y: 0 }} contentContainerStyle={styles.align} scrollEnabled={false} keyboardShouldPersistTaps={'never'}>
             <Image source={require("../assets/uniqueco-logo.png")} style={styles.logo} />
             <Image source={require("../assets/bg-image-large.png")} style={styles.largeImage} />
             <View style={styles.btnLoginContainer}>
@@ -86,9 +88,6 @@ export default function App({navigation}) {
                     onBlur={Keyboard.dismiss}
                     onSubmitEditing={Keyboard.dismiss}
                     placeholder={'Email'}
-
-
-
                 />
                 <TextInput
                     value={password}
@@ -126,13 +125,13 @@ export default function App({navigation}) {
 
                 />
                 <View style={styles.checboxContainer}>
-                <Checkbox
-                    status={checked ? 'checked' : 'unchecked'}
-                    onPress={() => {
-                        setChecked(!checked);
-                    }}
+                    <Checkbox
+                        status={checked ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                            setChecked(!checked);
+                        }}
                     />
-                <Text onPress={()=> navigate('Terms') }>Accept the Terms and Conditions</Text>
+                    <Text onPress={() => navigate('Terms')} style={{ fontSize: 16 }}>Accept the Terms and Conditions</Text>
                 </View>
 
                 <Pressable style={styles.loginBtn} onPress={() => register()} >
@@ -287,9 +286,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 20
     },
-    checboxContainer:{
-        flexDirection:'row',
-        alignItems:'center'
+    checboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
 
     }
 });
