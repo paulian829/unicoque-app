@@ -10,6 +10,9 @@ import {
 } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { passAuth } from "../config/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
 
 export default function App({ navigation }) {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -108,9 +111,7 @@ export default function App({ navigation }) {
         <Text style={styles.largeText}>Register new {activeLogin}</Text>
         <TextInput
           style={
-            activeLogin === "university"
-              ? styles.input
-              : styles.displayNone
+            activeLogin === "university" ? styles.input : styles.displayNone
           }
           value={uniName}
           onChangeText={(uniName) => setEmail(uniName)}
@@ -119,11 +120,7 @@ export default function App({ navigation }) {
           placeholder={"University name"}
         />
         <TextInput
-                  style={
-                    activeLogin === "student"
-                      ? styles.input
-                      : styles.password
-                  }
+          style={activeLogin === "student" ? styles.input : styles.password}
           value={email}
           onChangeText={(email) => setEmail(email)}
           onBlur={Keyboard.dismiss}

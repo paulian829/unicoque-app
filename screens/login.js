@@ -7,18 +7,18 @@ import {
   TextInput,
   TouchableHighlight,
   Keyboard,
+  Alert,
 } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { passAuth } from "../config/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function App({ navigation }) {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [activeLogin, setActiveLogin] = useState("student");
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
-  const [newEmail, setNewEmail] = useState(null);
-  const [newPassword, setNewPassword] = useState(null);
-  const [checked, setChecked] = useState(false);
 
   const navigate = (screen) => {
     navigation.navigate(screen);
@@ -62,13 +62,17 @@ export default function App({ navigation }) {
     navigation.navigate("ForgotPassword");
   };
   const login = () => {
-    alert(`${email} ${password}`)
-    // navigation.navigate("Dashboard");
+    signInWithEmailAndPassword(passAuth(), email, password)
+      .then((r) => {
+        console.log(r);
+        navigation.navigate("Dashboard");
+      })
+      .catch((e) => {
+        console.log(e);
+        Alert.alert("Error", "Something Went Wrong!");
+      });
   };
 
-  const register = () => {
-    alert(`${newEmail} ${newPassword} ${checked}`);
-  };
   return (
     <KeyboardAwareScrollView
       style={styles.container}
@@ -85,24 +89,6 @@ export default function App({ navigation }) {
         source={require("../assets/bg-image-large.png")}
         style={styles.largeImage}
       />
-      <View style={styles.btnLoginContainer}>
-        <TouchableHighlight
-          style={isActive("student")}
-          onPress={() => setActiveLogin("student")}
-          activeOpacity={0.4}
-          underlayColor="#e7decc"
-        >
-          <Text style={isActiveText("student")}>Student</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={isActive("university")}
-          onPress={() => setActiveLogin("university")}
-          activeOpacity={0.4}
-          underlayColor="#e7decc"
-        >
-          <Text style={isActiveText("university")}>University</Text>
-        </TouchableHighlight>
-      </View>
       <View
         style={styles.loginFormContainer}
         keyboardShouldPersistTaps={"handled"}
@@ -170,8 +156,8 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   largeImage: {
-    marginTop: -130,
-    width: "80%",
+    marginTop: -80,
+    width: "100%",
     resizeMode: "contain",
   },
   button: {
@@ -217,7 +203,6 @@ const styles = StyleSheet.create({
   },
   loginFormContainer: {
     width: "100%",
-    marginTop: 20,
   },
   registerFormContainer: {
     width: "100%",
