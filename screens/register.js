@@ -14,10 +14,12 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 export default function App({ navigation }) {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [activeLogin, setActiveLogin] = useState("student");
+  const [uniName, setUniName] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
-  const [newEmail, setNewEmail] = useState(null);
-  const [newPassword, setNewPassword] = useState(null);
+  const [repeatPassword, setRepeatPassword] = useState(null);
+  const [firstname, setFirstname] = useState(null);
+  const [lastname, setLastname] = useState(null);
   const [checked, setChecked] = useState(false);
 
   const navigate = (screen) => {
@@ -62,7 +64,7 @@ export default function App({ navigation }) {
     navigation.navigate("ForgotPassword");
   };
   const login = () => {
-    alert(`${email} ${password}`)
+    alert(`${email} ${password}`);
     // navigation.navigate("Dashboard");
   };
 
@@ -80,10 +82,6 @@ export default function App({ navigation }) {
       <Image
         source={require("../assets/uniqueco-logo.png")}
         style={styles.logo}
-      />
-      <Image
-        source={require("../assets/bg-image-large.png")}
-        style={styles.largeImage}
       />
       <View style={styles.btnLoginContainer}>
         <TouchableHighlight
@@ -107,9 +105,25 @@ export default function App({ navigation }) {
         style={styles.loginFormContainer}
         keyboardShouldPersistTaps={"handled"}
       >
-        <Text style={styles.largeText}>Login Account</Text>
+        <Text style={styles.largeText}>Register new {activeLogin}</Text>
         <TextInput
-          style={styles.input}
+          style={
+            activeLogin === "university"
+              ? styles.input
+              : styles.displayNone
+          }
+          value={uniName}
+          onChangeText={(uniName) => setEmail(uniName)}
+          onBlur={Keyboard.dismiss}
+          onSubmitEditing={Keyboard.dismiss}
+          placeholder={"University name"}
+        />
+        <TextInput
+                  style={
+                    activeLogin === "student"
+                      ? styles.input
+                      : styles.password
+                  }
           value={email}
           onChangeText={(email) => setEmail(email)}
           onBlur={Keyboard.dismiss}
@@ -125,21 +139,51 @@ export default function App({ navigation }) {
           onBlur={Keyboard.dismiss}
           onSubmitEditing={Keyboard.dismiss}
         />
+        <TextInput
+          value={repeatPassword}
+          onChangeText={(repeatPassword) => setRepeatPassword(repeatPassword)}
+          style={styles.password}
+          secureTextEntry={true}
+          placeholder={"Repeat Password"}
+          onBlur={Keyboard.dismiss}
+          onSubmitEditing={Keyboard.dismiss}
+        />
+        <TextInput
+          value={firstname}
+          onChangeText={(firstname) => setPassword(firstname)}
+          style={styles.password}
+          placeholder={"Firstname"}
+          onBlur={Keyboard.dismiss}
+          onSubmitEditing={Keyboard.dismiss}
+        />
+        <TextInput
+          value={lastname}
+          onChangeText={(lastname) => setPassword(lastname)}
+          style={styles.password}
+          placeholder={"Lastname"}
+          onBlur={Keyboard.dismiss}
+          onSubmitEditing={Keyboard.dismiss}
+        />
+
+        <View style={styles.checboxContainer}>
+          <Checkbox
+            status={checked ? "checked" : "unchecked"}
+            onPress={() => {
+              setChecked(!checked);
+            }}
+          />
+          <Text onPress={() => navigate("Terms")} style={{ fontSize: 16 }}>
+            Accept the Terms and Conditions
+          </Text>
+        </View>
         <TouchableHighlight
           style={styles.loginBtn}
           onPress={() => login()}
           activeOpacity={0.4}
           underlayColor="#e7decc"
         >
-          <Text style={styles.loginBtnText}>LOGIN</Text>
+          <Text style={styles.loginBtnText}>REGISTER</Text>
         </TouchableHighlight>
-
-        <Text
-          style={styles.forgotPassword}
-          onPress={() => goToForgotPassword()}
-        >
-          Forgot Password?
-        </Text>
       </View>
     </KeyboardAwareScrollView>
   );
@@ -211,7 +255,6 @@ const styles = StyleSheet.create({
     color: "#FF9829",
   },
   btnLoginContainer: {
-    marginTop: -80,
     flexWrap: "wrap",
     flexDirection: "row",
   },
@@ -242,7 +285,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   password: {
-    marginTop: 10,
+    marginTop: 20,
     height: 50,
     borderWidth: 1,
     padding: 10,
