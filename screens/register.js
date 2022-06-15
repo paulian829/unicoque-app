@@ -25,9 +25,8 @@ export default function App({ navigation }) {
   const [firstname, setFirstname] = useState(null);
   const [lastname, setLastname] = useState(null);
   const [checked, setChecked] = useState(false);
-  const [btnStatus, setBtnStatus] = useState(false)
-  const [btnText, setBtnText] = useState('REGISTER')
-
+  const [btnStatus, setBtnStatus] = useState(false);
+  const [btnText, setBtnText] = useState("REGISTER");
 
   const navigate = (screen) => {
     navigation.navigate(screen);
@@ -76,7 +75,7 @@ export default function App({ navigation }) {
   };
   const register = () => {
     // Check if all fields are not null
-    
+
     if (!email || !password || !repeatPassword || !firstname || !lastname) {
       Alert.alert("Error", "All fields are required");
       return;
@@ -99,21 +98,20 @@ export default function App({ navigation }) {
       Alert.alert("Error", "Password are not the same");
       return;
     }
-    setBtnStatus(true)
-    setBtnText('PLEASE WAIT..')
+    setBtnStatus(true);
+    setBtnText("PLEASE WAIT..");
     createUserWithEmailAndPassword(passAuth(), email, password)
       .then((r) => {
         console.log(r);
         createAccountDB(r.user.uid);
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
         Alert.alert("Error", "Something went wrong while registering account");
       });
   };
   const createAccountDB = (uid) => {
-
-    console.log("Adding DB account")
+    console.log("Adding DB account");
     const db = getDatabase();
     set(ref(db, "Account/" + uid), {
       Uid: uid,
@@ -122,16 +120,25 @@ export default function App({ navigation }) {
       firstName: firstname,
       lastName: lastname,
       dateCreated: Date.now(),
-    }).then(() => {
-      setBtnStatus(false)
-      setBtnText('REGISTER')
-    }).catch((e) => {
-      console.log(e)
-    });
+    })
+      .then(() => {
+        if (activeLogin === "university") {
+          saveDataUni(uid);
+        } else {
+          navigate("Login");
+
+          setBtnStatus(false);
+          setBtnText("REGISTER");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        setBtnStatus(false);
+        setBtnText("REGISTER");
+      });
   };
 
   const saveDataUni = (uid) => {
-    // Ignore this function
     const db = getDatabase();
     set(ref(db, "university/" + uid), {
       Uid: uid,
@@ -154,7 +161,17 @@ export default function App({ navigation }) {
       Requirements: {
         Date: " ",
       },
-    });
+    })
+      .then(() => {
+        navigate("Login");
+        setBtnStatus(false);
+        setBtnText("REGISTER");
+      })
+      .catch((e) => {
+        console.log(e);
+        setBtnStatus(false);
+        setBtnText("REGISTER");
+      });
   };
   return (
     <KeyboardAwareScrollView
