@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableHighlight,
   Keyboard,
+  Alert,
 } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -24,6 +25,9 @@ export default function App({ navigation }) {
   const [firstname, setFirstname] = useState(null);
   const [lastname, setLastname] = useState(null);
   const [checked, setChecked] = useState(false);
+  const [btnStatus, setBtnStatus] = useState(false)
+  const [btnText, setBtnText] = useState('REGISTER')
+
 
   const navigate = (screen) => {
     navigation.navigate(screen);
@@ -63,16 +67,94 @@ export default function App({ navigation }) {
       return styles.text;
     }
   };
-  const goToForgotPassword = () => {
-    navigation.navigate("ForgotPassword");
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
   };
-  const login = () => {
-    alert(`${email} ${password}`);
-    // navigation.navigate("Dashboard");
+  const register = () => {
+    // Check if all fields are not null
+    
+    if (!email || !password || !repeatPassword || !firstname || !lastname) {
+      Alert.alert("Error", "All fields are required");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      Alert.alert("Error", "Email not valid");
+      return;
+    }
+
+    if (!checked) {
+      Alert.alert("Error", "You need to accept terms and conditions");
+      return;
+    }
+    if (activeLogin === "university" && !uniName) {
+      Alert.alert("Error", "All fields are required");
+      return;
+    }
+    if (password !== repeatPassword) {
+      Alert.alert("Error", "Password are not the same");
+      return;
+    }
+    setBtnStatus(true)
+    setBtnText('PLEASE WAIT..')
+    createUserWithEmailAndPassword(passAuth(), email, password)
+      .then((r) => {
+        console.log(r);
+        createAccountDB(r.user.uid);
+      })
+      .catch((e) => {
+        console.log(e)
+        Alert.alert("Error", "Something went wrong while registering account");
+      });
+  };
+  const createAccountDB = (uid) => {
+
+    console.log("Adding DB account")
+    const db = getDatabase();
+    set(ref(db, "Account/" + uid), {
+      Uid: uid,
+      email: email,
+      type: activeLogin,
+      firstName: firstname,
+      lastName: lastname,
+      dateCreated: Date.now(),
+    }).then(() => {
+      setBtnStatus(false)
+      setBtnText('REGISTER')
+    }).catch((e) => {
+      console.log(e)
+    });
   };
 
-  const register = () => {
-    alert(`${newEmail} ${newPassword} ${checked}`);
+  const saveDataUni = (uid) => {
+    // Ignore this function
+    const db = getDatabase();
+    set(ref(db, "university/" + uid), {
+      Uid: uid,
+      publish: true,
+      Name: uniName,
+      Address: {
+        Lot: " ",
+      },
+      SchoolDetails: {
+        AboutSchool: " ",
+      },
+      ProgramsOffered: {
+        randomID1: {
+          Field: " ",
+        },
+      },
+      SchoolPerformance: {
+        Ranking: " ",
+      },
+      Requirements: {
+        Date: " ",
+      },
+    });
   };
   return (
     <KeyboardAwareScrollView
@@ -114,7 +196,7 @@ export default function App({ navigation }) {
             activeLogin === "university" ? styles.input : styles.displayNone
           }
           value={uniName}
-          onChangeText={(uniName) => setEmail(uniName)}
+          onChangeText={(uniName) => setUniName(uniName)}
           onBlur={Keyboard.dismiss}
           onSubmitEditing={Keyboard.dismiss}
           placeholder={"University name"}
@@ -147,7 +229,7 @@ export default function App({ navigation }) {
         />
         <TextInput
           value={firstname}
-          onChangeText={(firstname) => setPassword(firstname)}
+          onChangeText={(firstname) => setFirstname(firstname)}
           style={styles.password}
           placeholder={"Firstname"}
           onBlur={Keyboard.dismiss}
@@ -155,7 +237,7 @@ export default function App({ navigation }) {
         />
         <TextInput
           value={lastname}
-          onChangeText={(lastname) => setPassword(lastname)}
+          onChangeText={(lastname) => setLastname(lastname)}
           style={styles.password}
           placeholder={"Lastname"}
           onBlur={Keyboard.dismiss}
@@ -175,11 +257,12 @@ export default function App({ navigation }) {
         </View>
         <TouchableHighlight
           style={styles.loginBtn}
-          onPress={() => login()}
+          onPress={() => register()}
           activeOpacity={0.4}
           underlayColor="#e7decc"
+          disabled={btnStatus}
         >
-          <Text style={styles.loginBtnText}>REGISTER</Text>
+          <Text style={styles.loginBtnText}>{btnText}</Text>
         </TouchableHighlight>
       </View>
     </KeyboardAwareScrollView>
