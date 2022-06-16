@@ -15,8 +15,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Image, Button, View } from "react-native";
-import { IconButton, Colors } from "react-native-paper";
-
+import AppStateProvider from "./Context";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -67,62 +66,64 @@ function Dashboard() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            drawerItemStyle: { height: 0 },
-            headerShown: false,
-            swipeEdgeWidth: 0,
-          }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{
-            drawerItemStyle: { height: 0 },
-            headerShown: false,
-            swipeEdgeWidth: 0,
-          }}
-        />
-        <Stack.Screen
-          name="Register"
-          component={Register}
-          options={{
-            drawerItemStyle: { height: 0 },
-            headerShown: false,
-            swipeEdgeWidth: 0,
-          }}
-        />
-        <Stack.Screen
-          name="Terms"
-          component={Terms}
-          options={{
-            drawerItemStyle: { height: 0 },
-            headerShown: false,
-            swipeEdgeWidth: 0,
-          }}
-        />
-        <Stack.Screen
-          name="ForgotPassword"
-          component={ForgotPassword}
-          options={{
-            drawerItemStyle: { height: 0 },
-            headerShown: false,
-            swipeEdgeWidth: 0,
-          }}
-        />
-        <Stack.Screen
-          name="Dashboard"
-          component={Dashboard}
-          options={{
-            headerShown: false,
-            swipeEdgeWidth: "100%",
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AppStateProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{
+              drawerItemStyle: { height: 0 },
+              headerShown: false,
+              swipeEdgeWidth: 0,
+            }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{
+              drawerItemStyle: { height: 0 },
+              headerShown: false,
+              swipeEdgeWidth: 0,
+            }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={Register}
+            options={{
+              drawerItemStyle: { height: 0 },
+              headerShown: false,
+              swipeEdgeWidth: 0,
+            }}
+          />
+          <Stack.Screen
+            name="Terms"
+            component={Terms}
+            options={{
+              drawerItemStyle: { height: 0 },
+              headerShown: false,
+              swipeEdgeWidth: 0,
+            }}
+          />
+          <Stack.Screen
+            name="ForgotPassword"
+            component={ForgotPassword}
+            options={{
+              drawerItemStyle: { height: 0 },
+              headerShown: false,
+              swipeEdgeWidth: 0,
+            }}
+          />
+          <Stack.Screen
+            name="Dashboard"
+            component={Dashboard}
+            options={{
+              headerShown: false,
+              swipeEdgeWidth: "100%",
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AppStateProvider>
   );
 }
