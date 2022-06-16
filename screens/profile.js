@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { IconButton, Colors } from "react-native-paper";
 
@@ -16,6 +16,8 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 // import { DocumentPicker, ImagePicker } from 'expo';
 import * as DocumentPicker from "expo-document-picker";
+import { AppStateContext } from "../Context";
+
 
 export default function Profile({ navigation }) {
   const [data, setData] = useState({
@@ -26,6 +28,9 @@ export default function Profile({ navigation }) {
     profileImage:
       "https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fdefault_profile.jpeg?alt=media&token=e8fc4a09-de30-4fb8-8416-168865072c13",
   });
+
+  const [account, setAccount] = useContext(AppStateContext);
+
 
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
@@ -56,6 +61,12 @@ export default function Profile({ navigation }) {
       ),
     });
   });
+  useEffect(() => {
+    // Get account information on Firebase
+    console.log(account)
+    // Get 
+
+  }, []); 
 
   const navigate = (screen) => {
     navigation.navigate(screen);

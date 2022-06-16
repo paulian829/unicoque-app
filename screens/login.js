@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,12 +13,19 @@ import { Checkbox } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { passAuth } from "../config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { AppStateContext } from "../Context";
 
 export default function App({ navigation }) {
+  // States
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [activeLogin, setActiveLogin] = useState("student");
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+
+  // Context
+  const [user, setUser] = useContext(AppStateContext);
+  const [uid, setUid] = useContext(AppStateContext);
+
 
   const navigate = (screen) => {
     navigation.navigate(screen);
@@ -62,9 +69,16 @@ export default function App({ navigation }) {
     navigation.navigate("ForgotPassword");
   };
   const login = () => {
+    if (!email && !password){
+      Alert.alert("Error", "Fields are required!");
+      return
+    }
+
     signInWithEmailAndPassword(passAuth(), email, password)
       .then((r) => {
-        console.log(r);
+        console.log(r)
+        setUid(r['Uid'])
+        setUser(r['user'])
         navigation.navigate("Dashboard");
       })
       .catch((e) => {
