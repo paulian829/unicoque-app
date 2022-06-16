@@ -24,6 +24,8 @@ export default function App({ navigation }) {
 
   // Context
   const [user, setUser] = useContext(AppStateContext);
+  const [uid, setUid] = useContext(AppStateContext);
+
 
   const navigate = (screen) => {
     navigation.navigate(screen);
@@ -74,8 +76,9 @@ export default function App({ navigation }) {
 
     signInWithEmailAndPassword(passAuth(), email, password)
       .then((r) => {
-        console.log(r);
-        setUser(r.user)
+        console.log(r)
+        setUid(r['Uid'])
+        setUser(r['user'])
         navigation.navigate("Dashboard");
       })
       .catch((e) => {

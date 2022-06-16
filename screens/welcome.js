@@ -15,6 +15,8 @@ import { AppStateContext } from "../Context";
 
 export default function Welcome({ navigation }) {
   const [user, setUser] = useContext(AppStateContext);
+  const [account, setAccount] = useContext(AppStateContext);
+
 
   const nav = useNavigation();
   useEffect(() => {
@@ -40,8 +42,8 @@ export default function Welcome({ navigation }) {
 
   useEffect(() => {
     // Get account information on Firebase
-
-
+    console.log(user)
+    setAccount('Sample Account')
     // Get 
 
   }, []); 
