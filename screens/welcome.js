@@ -12,11 +12,13 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AppStateContext } from "../Context";
+import { getDatabase, ref, onValue } from "firebase/database";
 
 export default function Welcome({ navigation }) {
   const [user, setUser] = useContext(AppStateContext);
   const [account, setAccount] = useContext(AppStateContext);
-
+  const [type, setType] = useContext(AppStateContext);
+  const [university, setUniversity] = useContext(AppStateContext);
 
   const nav = useNavigation();
   useEffect(() => {
@@ -42,11 +44,30 @@ export default function Welcome({ navigation }) {
 
   useEffect(() => {
     // Get account information on Firebase
-    console.log(user)
-    setAccount('Sample Account')
-    // Get 
+    console.log(user.uid);
 
-  }, []); 
+    const db = getDatabase();
+    const dataRef = ref(db, "Account/" + user.uid);
+    onValue(dataRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log(data);
+      setAccount(data);
+      setType(data.type);
+      if (data.type == "university") {
+        downloadUniData();
+      }
+    });
+    // Get
+  }, []);
+
+  const downloadUniData = () => (event) => {
+    const db = getDatabase();
+    const UniRef = ref(db, "University/" + user.uid);
+    onValue(UniRef, (snapshot) => {
+      const data = snapshot.val();
+      setUniversity(data);
+    });
+  };
 
   const navigate = (screen) => {
     navigation.navigate(screen);
