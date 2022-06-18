@@ -85,13 +85,14 @@ export default function Welcome({ navigation }) {
     navigation.navigate(screen);
   };
   const clickSchool = (screen, key) => {
+    console.log(key)
     navigation.navigate(screen, { key: key });
   };
 
   const tifOptions = Object.keys(schoolData).map((key) => (
     <Card
       style={{ marginBottom: 20 }}
-      onPress={() => clickSchool("SchoolView")}
+      onPress={() => clickSchool("SchoolView",schoolData[key].Uid)}
       key={key}
     >
       <Card.Cover
