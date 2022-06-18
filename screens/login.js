@@ -14,6 +14,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { passAuth } from "../config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { AppStateContext } from "../Context";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 export default function App({ navigation }) {
   // States
@@ -21,6 +22,8 @@ export default function App({ navigation }) {
   const [activeLogin, setActiveLogin] = useState("student");
   const [email, setEmail] = useState('test100@email.com');
   const [password, setPassword] = useState('test123');
+  const [btnStatus, setBtnStatus] = useState(false);
+  const [btnText, setBtnText] = useState("LOGIN");
 
   // Context
   const [user, setUser] = useContext(AppStateContext);
@@ -30,6 +33,12 @@ export default function App({ navigation }) {
   const navigate = (screen) => {
     navigation.navigate(screen);
   };
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    setBtnStatus(false)
+    setBtnText('LOGIN')
+  }, [isFocused]);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -69,7 +78,12 @@ export default function App({ navigation }) {
     navigation.navigate("ForgotPassword");
   };
   const login = () => {
-    if (!email && !password){
+    setBtnStatus(true)
+    setBtnText("PLEASE WAIT...")
+    if (!email && !password) {
+      setBtnStatus(false)
+      setBtnText("LOGIN")
+
       Alert.alert("Error", "Fields are required!");
       return
     }
@@ -82,6 +96,8 @@ export default function App({ navigation }) {
         navigation.navigate("Dashboard");
       })
       .catch((e) => {
+        setBtnStatus(false)
+        setBtnText("LOGIN")
         console.log(e);
         Alert.alert("Error", "Something Went Wrong!");
       });
@@ -130,8 +146,9 @@ export default function App({ navigation }) {
           onPress={() => login()}
           activeOpacity={0.4}
           underlayColor="#e7decc"
+          disabled={btnStatus}
         >
-          <Text style={styles.loginBtnText}>LOGIN</Text>
+          <Text style={styles.loginBtnText}>{btnText}</Text>
         </TouchableHighlight>
 
         <Text
@@ -171,7 +188,7 @@ const styles = StyleSheet.create({
   },
   largeImage: {
     marginTop: -80,
-    marginBottom:-60,
+    marginBottom: -60,
     width: "100%",
     resizeMode: "contain",
   },

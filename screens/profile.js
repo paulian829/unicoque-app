@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { IconButton, Colors } from "react-native-paper";
 import { getDatabase, ref, child, push, update } from "firebase/database";
-import { getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
-
+import { getStorage, ref as storageRef, uploadBytes, uploadString, getDownloadURL } from "firebase/storage";
 
 import {
   StyleSheet,
@@ -24,9 +23,7 @@ import { AppStateContext } from "../Context";
 const OriginalProfPic =
   "https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fdefault_profile.jpeg?alt=media&token=e8fc4a09-de30-4fb8-8416-168865072c13";
 export default function Profile({ navigation }) {
-  const [profilePic, setProfilePic] = useState(
-    "https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fdefault_profile.jpeg?alt=media&token=e8fc4a09-de30-4fb8-8416-168865072c13"
-  );
+  const [profilePic, setProfilePic] = useState(null);
   const [file, setFile] = useState(null);
 
   const [account, setAccount] = useContext(AppStateContext);
@@ -42,8 +39,12 @@ export default function Profile({ navigation }) {
     if (result.type === "cancel") {
       return;
     }
-    setFile(result)
-    setProfilePic(result.uri);
+    setProfilePic(result.uri)
+    const response = await fetch(result.uri);
+    const blob = await response.blob();
+    console.log(blob)
+    setFile(blob)
+
   };
 
   const nav = useNavigation();
@@ -70,6 +71,7 @@ export default function Profile({ navigation }) {
 
   useEffect(() => {
     setData(account);
+    setProfilePic(account.profilePic)
     setLoading(false);
     setLoadingBtn("SAVE PROFILE");
   }, [isFocused]);
@@ -95,25 +97,43 @@ export default function Profile({ navigation }) {
     setLoading(true);
     setLoadingBtn("PLEASE WAIT...");
     setAccount(data);
-    if (OriginalProfPic !== profilePic) {
+
+    var randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    var uniqid = randLetter + Date.now();
+
+    if (file) {
       // Upload first the profile picture.
+      console.log('Will Upload a new one')
       const storage = getStorage();
-      const picRef = storageRef(storage, "/profilePic/TEst.jpg");
+      const picRef = storageRef(storage, "/profilePic/" + uniqid + ".jpeg");
 
       uploadBytes(picRef, file).then((snapshot) => {
-        console.log("Uploaded a blob or file!");
-      });
+
+        getDownloadURL(picRef).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+          updateDatabase(downloadURL)
+
+        });
+      }).catch(() => console.log("Error"));
+    }else{
+      updateDatabase()
     }
 
+
+  };
+  const updateDatabase = (downloadURL) => {
+    if(file){
+      data['profilePic'] = downloadURL
+    }
     const db = getDatabase();
     const updates = {};
     updates["/Account/" + account.Uid] = data;
     update(ref(db), updates).then(() => {
-      alert("Finished");
+      alert("Profile Updated");
       setLoading(false);
       setLoadingBtn("SAVE PROFILE");
     });
-  };
+  }
 
   return (
     <KeyboardAwareScrollView style={styles.container}>
@@ -125,7 +145,7 @@ export default function Profile({ navigation }) {
             style={styles.logo}
           >
             <Image
-              source={{ uri: profilePic }}
+              source={profilePic ? { uri: profilePic } : { uri: OriginalProfPic }}
               onPress={() => pickDocument()}
               style={styles.logo}
             />
