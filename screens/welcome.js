@@ -52,7 +52,6 @@ export default function Welcome({ navigation }) {
       const data = snapshot.val();
       console.log(data);
       setAccount(data);
-      setType(data.type);
       if (data.type == "university") {
         downloadUniData();
       }

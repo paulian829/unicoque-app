@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef,useContext } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { IconButton, Colors } from "react-native-paper";
+import { getDatabase, ref, child, push, update } from "firebase/database";
 
 import {
   StyleSheet,
@@ -18,26 +19,23 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import * as DocumentPicker from "expo-document-picker";
 import { AppStateContext } from "../Context";
 
-
+const OriginalProfPic = 'https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fdefault_profile.jpeg?alt=media&token=e8fc4a09-de30-4fb8-8416-168865072c13'
 export default function Profile({ navigation }) {
-  const [data, setData] = useState({
-    email: "name@email.com",
-    name: "Juan Dela Cruz",
-    age: "29",
-    address: "Random address here",
-    profileImage:
-      "https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fdefault_profile.jpeg?alt=media&token=e8fc4a09-de30-4fb8-8416-168865072c13",
-  });
+  const [profilePic, setProfilePic] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fdefault_profile.jpeg?alt=media&token=e8fc4a09-de30-4fb8-8416-168865072c13"
+  );
 
   const [account, setAccount] = useContext(AppStateContext);
 
+  const [data, setData] = useState(account);
+  const isFocused = useIsFocused();
 
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
     if (result.type === "cancel") {
       return;
     }
-    updateData(result.uri, "profileImage");
+    setProfilePic(result.uri);
   };
 
   const nav = useNavigation();
@@ -61,12 +59,10 @@ export default function Profile({ navigation }) {
       ),
     });
   });
-  useEffect(() => {
-    // Get account information on Firebase
-    console.log(account)
-    // Get 
 
-  }, []); 
+  useEffect(() => {
+    setData(account);
+  }, [isFocused]);
 
   const navigate = (screen) => {
     navigation.navigate(screen);
@@ -79,6 +75,20 @@ export default function Profile({ navigation }) {
     }));
   };
 
+  const textSlice = (item) => {
+    let d = new Date(item);
+    d = d.toString();
+    return d.slice(0, 21);
+  };
+
+  const saveData = () => {
+    setAccount(data);
+    const db = getDatabase();
+    const updates = {};
+    updates["/Account/" + account.Uid] = data;
+    return update(ref(db), updates);
+  };
+
   return (
     <KeyboardAwareScrollView style={styles.container}>
       <ScrollView>
@@ -89,7 +99,7 @@ export default function Profile({ navigation }) {
             style={styles.logo}
           >
             <Image
-              source={{ uri: data.profileImage }}
+              source={{ uri: profilePic }}
               onPress={() => pickDocument()}
               style={styles.logo}
             />
@@ -105,35 +115,48 @@ export default function Profile({ navigation }) {
             style={styles.input}
             onChangeText={(email) => updateData(email, "email")}
             onSubmitEditing={Keyboard.dismiss}
-            placeholder={"Email"}
+            editable={false}
           />
-          <Text style={styles.label}>Name</Text>
+          <Text style={styles.label}>firstname</Text>
           <TextInput
-            value={data.name}
+            value={data.firstName}
             style={styles.input}
-            onChangeText={(name) => updateData(name, "name")}
+            onChangeText={(firstName) => updateData(firstName, "firstName")}
             onSubmitEditing={Keyboard.dismiss}
-            placeholder={"Age"}
           />
-          <Text style={styles.label}>Age</Text>
+          <Text style={styles.label}>lastname</Text>
           <TextInput
-            value={data.age}
+            value={data.lastName}
             style={styles.input}
-            onChangeText={(age) => updateData(age, "age")}
+            onChangeText={(lastName) => updateData(lastName, "lastName")}
             onSubmitEditing={Keyboard.dismiss}
-            placeholder={"Email"}
           />
-          <Text style={styles.label}>Address</Text>
+          <Text style={styles.label}>Contact number</Text>
           <TextInput
-            value={data.address}
+            value={data.contactNumber}
             style={styles.input}
-            onChangeText={(address) => updateData(address, "address")}
+            onChangeText={(contactNumber) =>
+              updateData(contactNumber, "contactNumber")
+            }
             onSubmitEditing={Keyboard.dismiss}
-            placeholder={"Email"}
+          />
+          <Text style={styles.label}>Account type</Text>
+          <TextInput
+            value={data.type}
+            style={styles.input}
+            onSubmitEditing={Keyboard.dismiss}
+            editable={false}
+          />
+          <Text style={styles.label}>Date Created</Text>
+          <TextInput
+            value={textSlice(account.dateCreated)}
+            style={styles.input}
+            onSubmitEditing={Keyboard.dismiss}
+            editable={false}
           />
           <TouchableHighlight
             style={styles.btn}
-            onPress={() => console.log(data)}
+            onPress={() => saveData()}
             activeOpacity={0.4}
             underlayColor="#e7decc"
           >
@@ -159,7 +182,7 @@ const styles = StyleSheet.create({
   },
   heading1: {
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 24,
     color: "#5F5E5E",
   },
   headingContainer: {

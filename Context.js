@@ -11,9 +11,21 @@ const AppStateProvider = (props) => {
 
   const isFirstRender = useRef(true);
 
-
   return (
-    <AppStateContext.Provider value={[user, setUser]}>
+    <AppStateContext.Provider
+      value={[
+        user,
+        setUser,
+        uid,
+        type,
+        account,
+        university,
+        setUid,
+        setType,
+        setAccount,
+        setUniversity,
+      ]}
+    >
       {props.children}
     </AppStateContext.Provider>
   );
