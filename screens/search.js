@@ -4,53 +4,43 @@ import { IconButton, Colors } from 'react-native-paper';
 import { StyleSheet, Text, View, Image, SafeAreaView, ScrollView, TouchableHighlight } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
 
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
-
-let data = {
-    randomid1: {
-        Name: 'Cavite School',
-        logoURL: 'https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/logo%2FOiglKaN1qIPJGo6Y5JxCg4ZMheu1.png?alt=media&token=a31a248a-68cf-4d0b-ab33-e99e89dd6e42',
-        Address: {
-            City: 'random city'
-        }
-    },
-    randomid2: {
-        Name: 'Rizal School',
-        logoURL: 'https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/logo%2FOiglKaN1qIPJGo6Y5JxCg4ZMheu1.png?alt=media&token=a31a248a-68cf-4d0b-ab33-e99e89dd6e42',
-
-        Address: {
-            City: 'random city'
-        }
-    },
-    randomid3: {
-        Name: 'Quezon School',
-        logoURL: 'https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/logo%2FOiglKaN1qIPJGo6Y5JxCg4ZMheu1.png?alt=media&token=a31a248a-68cf-4d0b-ab33-e99e89dd6e42',
-
-        Address: {
-            City: 'random city'
-        }
-    }
-}
+import { getDatabase, ref, onValue } from "firebase/database";
 
 
 export default function Welcome({ navigation }) {
     const [searchValue, setSearchValue] = useState('')
-    const [schoolData, setSchoolData] = useState(data)
-    const [originalData, setOriginalData] = useState(data)
-
+    const [schoolData, setSchoolData] = useState([])
+    const [originalData, setOriginalData] = useState([])
+    const isFocused = useIsFocused();
 
     useEffect(() => {
+        console.log("Running test")
+        const db = getDatabase();
+        const UniRef = ref(db, "university/");
+        onValue(UniRef, (snapshot) => {
+            const allSchools = snapshot.val();
+            console.log(typeof(allSchools))
+            let arr =[]
+            for (let key in allSchools){
+                arr.push(allSchools[key])
+            }
+            // allSchools.forEach(item => {console.log('test')})
 
-    })
+            setSchoolData([...arr]);
+            // setOriginalData(allSchools);
+        });
+
+    }, [isFocused])
 
     useEffect(() => {
 
         let results = {}
         let search = searchValue
         if (search.length === 0) {
-            setSchoolData(data)
+            setSchoolData(originalData)
             return
         }
         for (let item in originalData) {
@@ -61,8 +51,6 @@ export default function Welcome({ navigation }) {
             }
         }
         setSchoolData(results)
-
-
     }, [searchValue])
 
     const nav = useNavigation();
