@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
   },
   largeImage: {
     marginTop: -80,
+    marginBottom:-60,
     width: "100%",
     resizeMode: "contain",
   },

@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   Keyboard,
   Alert,
+  ScrollView
 } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -178,9 +179,10 @@ export default function App({ navigation }) {
       style={styles.container}
       resetScrollToCoords={{ x: 0, y: 0 }}
       contentContainerStyle={styles.align}
-      scrollEnabled={false}
       keyboardShouldPersistTaps={"never"}
     >
+      <ScrollView>
+
       <Image
         source={require("../assets/uniqueco-logo.png")}
         style={styles.logo}
@@ -282,6 +284,8 @@ export default function App({ navigation }) {
           <Text style={styles.loginBtnText}>{btnText}</Text>
         </TouchableHighlight>
       </View>
+      <View style={{height:100}} />
+      </ScrollView>
     </KeyboardAwareScrollView>
   );
 }
@@ -295,7 +299,6 @@ const styles = StyleSheet.create({
   align: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 50,
   },
   background: {
     position: "absolute",
@@ -305,6 +308,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   logo: {
+    alignSelf:'center',
     marginTop: 10,
     width: "50%",
     height: 100,
