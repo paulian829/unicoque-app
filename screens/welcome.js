@@ -17,7 +17,6 @@ import { getDatabase, ref, onValue } from "firebase/database";
 export default function Welcome({ navigation }) {
   const [user, setUser] = useContext(AppStateContext);
   const [account, setAccount] = useContext(AppStateContext);
-  const [type, setType] = useContext(AppStateContext);
   const [university, setUniversity] = useContext(AppStateContext);
 
   const nav = useNavigation();

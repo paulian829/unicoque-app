@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { IconButton, Colors } from "react-native-paper";
 import { getDatabase, ref, child, push, update } from "firebase/database";
+import { getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
+
 
 import {
   StyleSheet,
@@ -19,22 +21,28 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import * as DocumentPicker from "expo-document-picker";
 import { AppStateContext } from "../Context";
 
-const OriginalProfPic = 'https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fdefault_profile.jpeg?alt=media&token=e8fc4a09-de30-4fb8-8416-168865072c13'
+const OriginalProfPic =
+  "https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fdefault_profile.jpeg?alt=media&token=e8fc4a09-de30-4fb8-8416-168865072c13";
 export default function Profile({ navigation }) {
   const [profilePic, setProfilePic] = useState(
     "https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fdefault_profile.jpeg?alt=media&token=e8fc4a09-de30-4fb8-8416-168865072c13"
   );
+  const [file, setFile] = useState(null);
 
   const [account, setAccount] = useContext(AppStateContext);
+  const [loading, setLoading] = useState(false);
+  const [loadingBtn, setLoadingBtn] = useState("SAVE PROFILE");
 
   const [data, setData] = useState(account);
   const isFocused = useIsFocused();
 
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
+    console.log((result))
     if (result.type === "cancel") {
       return;
     }
+    setFile(result)
     setProfilePic(result.uri);
   };
 
@@ -62,6 +70,8 @@ export default function Profile({ navigation }) {
 
   useEffect(() => {
     setData(account);
+    setLoading(false);
+    setLoadingBtn("SAVE PROFILE");
   }, [isFocused]);
 
   const navigate = (screen) => {
@@ -82,11 +92,27 @@ export default function Profile({ navigation }) {
   };
 
   const saveData = () => {
+    setLoading(true);
+    setLoadingBtn("PLEASE WAIT...");
     setAccount(data);
+    if (OriginalProfPic !== profilePic) {
+      // Upload first the profile picture.
+      const storage = getStorage();
+      const picRef = storageRef(storage, "/profilePic/TEst.jpg");
+
+      uploadBytes(picRef, file).then((snapshot) => {
+        console.log("Uploaded a blob or file!");
+      });
+    }
+
     const db = getDatabase();
     const updates = {};
     updates["/Account/" + account.Uid] = data;
-    return update(ref(db), updates);
+    update(ref(db), updates).then(() => {
+      alert("Finished");
+      setLoading(false);
+      setLoadingBtn("SAVE PROFILE");
+    });
   };
 
   return (
@@ -159,8 +185,9 @@ export default function Profile({ navigation }) {
             onPress={() => saveData()}
             activeOpacity={0.4}
             underlayColor="#e7decc"
+            disabled={loading}
           >
-            <Text style={styles.btnText}>SAVE</Text>
+            <Text style={styles.btnText}>{loadingBtn}</Text>
           </TouchableHighlight>
         </View>
       </ScrollView>
