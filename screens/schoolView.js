@@ -8,6 +8,7 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  Button,
 } from "react-native";
 
 import { useNavigation, useIsFocused } from "@react-navigation/native";
@@ -108,6 +109,16 @@ export default function Welcome({ route, navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.topContainer}>
+            <View style={styles.buttonContainer}>
+              <Button title="Articles" color={'#FF9829'}/>
+            </View>
+            <View style={styles.buttonContainer}>
+              <Button title="Review" color={'#FF9829'} onPress={() => navigate('Review')}/>
+            </View>
+          </View>
+        </View>
         <View style={styles.padding}>
           <Text style={styles.headingOne}>
             {schoolData ? schoolData.Name : "None"}
@@ -292,5 +303,17 @@ const styles = StyleSheet.create({
   loopTitle: { fontSize: 25 },
   performance: {
     marginTop: 10,
+  },
+  topContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    marginTop:30
+  },
+  buttonContainer: {
+    flex: 1,
+    marginHorizontal: 7,
   },
 });
