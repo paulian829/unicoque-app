@@ -25,7 +25,7 @@ export default function App({ navigation }) {
   const [btnStatus, setBtnStatus] = useState(false);
   const [btnText, setBtnText] = useState("LOGIN");
 
-  // Context
+  // Context 
   const [user, setUser] = useContext(AppStateContext);
   const [uid, setUid] = useContext(AppStateContext);
 
