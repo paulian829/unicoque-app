@@ -84,7 +84,7 @@ export default function Welcome({ route, navigation }) {
 
   const requirements = (arr) => {
     if (!arr) return;
-    if (!arr === 'N/A') return 'N/A'
+    if (!arr === "N/A") return "N/A";
     let newArr = arr.split("/");
     var loopData = "";
     var i;
@@ -169,24 +169,34 @@ export default function Welcome({ route, navigation }) {
             <Text style={styles.headingOne}>Admission Requirements</Text>
             <Card style={styles.cards}>
               <Card.Content>
-                <Title>Cross Enrolles</Title>
-                <Text>{requirements(schoolData.Requirements.CrossEnrolles)}</Text>
-  
+                <Title style={styles.loopTitle}>Cross Enrolles</Title>
+                <Text style={styles.loopText}>
+                  {requirements(schoolData.Requirements.CrossEnrolles)}
+                </Text>
               </Card.Content>
             </Card>
             <Card style={styles.cards}>
               <Card.Content>
-                <Title>Freshmen</Title>
-                <Text>{requirements(schoolData.Requirements.Freshmen)}</Text>
+                <Title style={styles.loopTitle}>Freshmen</Title>
+                <Text style={styles.loopText}>
+                  {requirements(schoolData.Requirements.Freshmen)}
+                </Text>
               </Card.Content>
             </Card>
             <Card style={styles.cards}>
               <Card.Content>
-                <Title>Second Course</Title>
-                <Text>{requirements(schoolData.Requirements.SecondCourse)}</Text>
-
+                <Title style={styles.loopTitle}>Second Course</Title>
+                <Text style={styles.loopText}>
+                  {requirements(schoolData.Requirements.SecondCourse)}
+                </Text>
               </Card.Content>
             </Card>
+          </View>
+        </View>
+        <View>
+          <Text style={styles.headingOne}>Available Scholarships</Text>
+          <View style={{ paddingHorizontal: 20 }}>
+            <Text style={styles.loopText}>{schoolData.Scholarship}</Text>
           </View>
         </View>
       </ScrollView>
@@ -245,4 +255,9 @@ const styles = StyleSheet.create({
   cards: {
     marginVertical: 10,
   },
+  loopText: {
+    fontSize: 18,
+    lineHeight: 28,
+  },
+  loopTitle: { fontSize: 25 },
 });
