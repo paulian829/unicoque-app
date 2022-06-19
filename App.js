@@ -16,6 +16,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Image, Button, View } from "react-native";
 import AppStateProvider from "./Context";
+import Review from "./screens/review";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -60,6 +61,7 @@ function Dashboard() {
         component={SchoolView}
         options={headerLogo()}
       />
+      <Drawer.Screen name="Review" component={Review} options={headerLogo()} />
     </Drawer.Navigator>
   );
 }

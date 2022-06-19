@@ -109,7 +109,9 @@ export default function Welcome({ route, navigation }) {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.padding}>
-          <Text style={styles.headingOne}>{schoolData.Name}</Text>
+          <Text style={styles.headingOne}>
+            {schoolData ? schoolData.Name : "None"}
+          </Text>
           <Image
             source={
               schoolData.logo
@@ -129,10 +131,14 @@ export default function Welcome({ route, navigation }) {
             <Text
               style={{ fontSize: 22, textAlign: "center", fontWeight: "bold" }}
             >
-              {schoolData.SchoolPerformance.Ranking}
+              {schoolData.SchoolPerformance
+                ? schoolData.SchoolPerformance.Ranking
+                : ""}
             </Text>
             <Text style={{ fontSize: 16, textAlign: "center" }}>
-              {schoolData.SchoolPerformance.BoardPerformance}{" "}
+              {schoolData.SchoolPerformance
+                ? schoolData.SchoolPerformance.BoardPerformance
+                : ""}
             </Text>
           </View>
 
@@ -182,7 +188,11 @@ export default function Welcome({ route, navigation }) {
               <Card.Content>
                 <Title style={styles.loopTitle}>Cross Enrolles</Title>
                 <Text style={styles.loopText}>
-                  {requirements(schoolData.Requirements.CrossEnrolles)}
+                  {requirements(
+                    schoolData.Requirements
+                      ? schoolData.Requirements.CrossEnrolles
+                      : ""
+                  )}
                 </Text>
               </Card.Content>
             </Card>
@@ -190,7 +200,11 @@ export default function Welcome({ route, navigation }) {
               <Card.Content>
                 <Title style={styles.loopTitle}>Freshmen</Title>
                 <Text style={styles.loopText}>
-                  {requirements(schoolData.Requirements.Freshmen)}
+                  {requirements(
+                    schoolData.Requirements
+                      ? schoolData.Requirements.Freshmen
+                      : ""
+                  )}
                 </Text>
               </Card.Content>
             </Card>
@@ -198,7 +212,11 @@ export default function Welcome({ route, navigation }) {
               <Card.Content>
                 <Title style={styles.loopTitle}>Second Course</Title>
                 <Text style={styles.loopText}>
-                  {requirements(schoolData.Requirements.SecondCourse)}
+                  {requirements(
+                    schoolData.Requirements
+                      ? schoolData.Requirements.SecondCourse
+                      : ""
+                  )}
                 </Text>
               </Card.Content>
             </Card>
