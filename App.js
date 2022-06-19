@@ -18,6 +18,7 @@ import { Image, Button, View } from "react-native";
 import AppStateProvider from "./Context";
 import Review from "./screens/review";
 import ArticlesList from "./screens/articles-list";
+import Article from "./screens/article";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -64,6 +65,8 @@ function Dashboard() {
       />
       <Drawer.Screen name="Review" component={Review} options={headerLogo()} />
       <Drawer.Screen name="ArticlesList" component={ArticlesList} options={headerLogo()} />
+      <Drawer.Screen name="Article" component={Article} options={headerLogo()} />
+
 
     </Drawer.Navigator>
   );

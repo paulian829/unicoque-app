@@ -24,8 +24,13 @@ export default function ArticlesList({ route, navigation }) {
     });
   }, [isFocused]);
 
+
+  const clickArticle = (screen, articleKey) => {
+    navigation.navigate(screen, { articlekey: articleKey, uniKey: key });
+  };
+
   const articlesList = Object.keys(articles).map((key) => (
-    <Card style={styles.cards} key={key}>
+    <Card style={styles.cards} key={key} onPress={() => clickArticle('Article',key)}>
       <Card.Content>
         <Card.Cover
           source={
