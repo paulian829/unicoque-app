@@ -125,6 +125,11 @@ export default function Welcome({ route, navigation }) {
           <Text style={styles.headingTwo}>
             {schoolData.SchoolDetails.Qoute}
           </Text>
+          <View style={styles.performance}>
+            <Text style={{fontSize:22,textAlign:'center', fontWeight:'bold' }}>{schoolData.SchoolPerformance.Ranking}</Text>
+            <Text style={{fontSize:16,textAlign:'center' }}>{schoolData.SchoolPerformance.BoardPerformance} </Text>
+          </View>
+
           <View style={styles.section}>
             <Text style={styles.label}>About School</Text>
             <Text style={styles.sectionContent}>
@@ -239,7 +244,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   label: {
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight:'bold'
   },
   section: {
     marginVertical: 10,
@@ -260,4 +266,7 @@ const styles = StyleSheet.create({
     lineHeight: 28,
   },
   loopTitle: { fontSize: 25 },
+  performance:{
+    marginTop:10
+  }
 });
