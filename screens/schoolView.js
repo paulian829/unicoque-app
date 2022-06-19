@@ -126,8 +126,14 @@ export default function Welcome({ route, navigation }) {
             {schoolData.SchoolDetails.Qoute}
           </Text>
           <View style={styles.performance}>
-            <Text style={{fontSize:22,textAlign:'center', fontWeight:'bold' }}>{schoolData.SchoolPerformance.Ranking}</Text>
-            <Text style={{fontSize:16,textAlign:'center' }}>{schoolData.SchoolPerformance.BoardPerformance} </Text>
+            <Text
+              style={{ fontSize: 22, textAlign: "center", fontWeight: "bold" }}
+            >
+              {schoolData.SchoolPerformance.Ranking}
+            </Text>
+            <Text style={{ fontSize: 16, textAlign: "center" }}>
+              {schoolData.SchoolPerformance.BoardPerformance}{" "}
+            </Text>
           </View>
 
           <View style={styles.section}>
@@ -198,7 +204,7 @@ export default function Welcome({ route, navigation }) {
             </Card>
           </View>
         </View>
-        <View>
+        <View style={{ marginBottom: 50, marginTop: -30 }}>
           <Text style={styles.headingOne}>Available Scholarships</Text>
           <View style={{ paddingHorizontal: 20 }}>
             <Text style={styles.loopText}>{schoolData.Scholarship}</Text>
@@ -245,7 +251,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 20,
-    fontWeight:'bold'
+    fontWeight: "bold",
   },
   section: {
     marginVertical: 10,
@@ -266,7 +272,7 @@ const styles = StyleSheet.create({
     lineHeight: 28,
   },
   loopTitle: { fontSize: 25 },
-  performance:{
-    marginTop:10
-  }
+  performance: {
+    marginTop: 10,
+  },
 });
