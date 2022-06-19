@@ -23,17 +23,44 @@ export default function Welcome({ route, navigation }) {
       AboutSchool: "random",
       Goal: "random",
       Qoute: "",
+      ProgramsOffered: {
+        key1: {
+          Field: "",
+          TuitionMax: 0,
+          TuitionMin: 0,
+          programs: ["", "", ""],
+        },
+        key2: {
+          Field: "",
+          TuitionMax: 0,
+          TuitionMin: 0,
+          programs: ["", "", ""],
+        },
+        key3: {
+          Field: "",
+          TuitionMax: 0,
+          TuitionMin: 0,
+          programs: ["", "", ""],
+        },
+        key4: {
+          Field: "",
+          TuitionMax: 0,
+          TuitionMin: 0,
+          programs: ["", "", ""],
+        },
+      },
     },
   });
+  const [programs, setPrograms] = useState({});
   const isFocused = useIsFocused();
   useEffect(() => {
-    console.log(`key is ${key}`);
     const db = getDatabase();
     const UniRef = ref(db, "university/" + key + "/");
     onValue(UniRef, (snapshot) => {
       let value = snapshot.val();
       setSchoolData(value);
-      console.log(value);
+      console.log(value.ProgramsOffered);
+      setPrograms(value.ProgramsOffered);
     });
   }, [isFocused]);
   const nav = useNavigation();
@@ -61,6 +88,30 @@ export default function Welcome({ route, navigation }) {
   const navigate = (screen) => {
     navigation.navigate(screen);
   };
+
+  const courses = (arr) => {
+    if (!arr) return
+    let newArr = arr.split(",");
+    var loopData = "";
+    var i;
+    for (i = 0; i < newArr.length; i++) {
+      console.log(newArr[i]);
+      loopData +=newArr[i].replace(/^\s+/g, '') + '\n'
+    }
+    return loopData;
+  };
+
+  const programsList = Object.keys(programs).map((key) => (
+    <Card style={styles.cards} key={key}>
+      <Card.Content>
+        <Title>{programs[key].Field}</Title>
+        <Paragraph>{courses(programs[key].programs)}</Paragraph>
+        <Paragraph style={{ marginTop:-10, fontWeight: "bold" }}>
+          {programs[key].TuitionMin} - {programs[key].TuitionMax}
+        </Paragraph>
+      </Card.Content>
+    </Card>
+  ));
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -119,42 +170,7 @@ export default function Welcome({ route, navigation }) {
           />
           <View style={styles.programs}>
             <Text style={styles.headingOne}>Programs</Text>
-            <Card style={styles.cards}>
-              <Card.Content>
-                <Title>Program Name</Title>
-                <Paragraph>Course 1</Paragraph>
-                <Paragraph>Course 1</Paragraph>
-                <Paragraph>Course 1</Paragraph>
-                <Paragraph>Course 1</Paragraph>
-                <Paragraph style={{ marginTop: 10, fontWeight: "bold" }}>
-                  20000-40000
-                </Paragraph>
-              </Card.Content>
-            </Card>
-            <Card style={styles.cards}>
-              <Card.Content>
-                <Title>Program Name</Title>
-                <Paragraph>Course 1</Paragraph>
-                <Paragraph>Course 1</Paragraph>
-                <Paragraph>Course 1</Paragraph>
-                <Paragraph>Course 1</Paragraph>
-                <Paragraph style={{ marginTop: 10, fontWeight: "bold" }}>
-                  20000-40000
-                </Paragraph>
-              </Card.Content>
-            </Card>
-            <Card style={styles.cards}>
-              <Card.Content>
-                <Title>Program Name</Title>
-                <Paragraph>Course 1</Paragraph>
-                <Paragraph>Course 1</Paragraph>
-                <Paragraph>Course 1</Paragraph>
-                <Paragraph>Course 1</Paragraph>
-                <Paragraph style={{ marginTop: 10, fontWeight: "bold" }}>
-                  20000-40000
-                </Paragraph>
-              </Card.Content>
-            </Card>
+            {programsList}
           </View>
           <View style={styles.programs}>
             <Text style={styles.headingOne}>Admission Requirements</Text>
