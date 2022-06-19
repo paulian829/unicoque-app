@@ -68,8 +68,10 @@ export default function Welcome({ route, navigation }) {
     });
   });
 
-  const navigate = (screen) => {
-    navigation.navigate(screen);
+  const navigate = (screen,key) => {
+    navigation.navigate(screen,{
+      key:key
+    });
   };
 
   const courses = (arr) => {
@@ -115,7 +117,7 @@ export default function Welcome({ route, navigation }) {
               <Button title="Articles" color={'#FF9829'}/>
             </View>
             <View style={styles.buttonContainer}>
-              <Button title="Review" color={'#FF9829'} onPress={() => navigate('Review')}/>
+              <Button title="Review" color={'#FF9829'} onPress={() => navigate('Review',key)}/>
             </View>
           </View>
         </View>
