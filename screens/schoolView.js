@@ -28,25 +28,7 @@ export default function Welcome({ route, navigation }) {
           Field: "",
           TuitionMax: 0,
           TuitionMin: 0,
-          programs: ["", "", ""],
-        },
-        key2: {
-          Field: "",
-          TuitionMax: 0,
-          TuitionMin: 0,
-          programs: ["", "", ""],
-        },
-        key3: {
-          Field: "",
-          TuitionMax: 0,
-          TuitionMin: 0,
-          programs: ["", "", ""],
-        },
-        key4: {
-          Field: "",
-          TuitionMax: 0,
-          TuitionMin: 0,
-          programs: ["", "", ""],
+          programs: [],
         },
       },
     },
@@ -59,7 +41,7 @@ export default function Welcome({ route, navigation }) {
     onValue(UniRef, (snapshot) => {
       let value = snapshot.val();
       setSchoolData(value);
-      console.log(value.ProgramsOffered);
+      console.log(value);
       setPrograms(value.ProgramsOffered);
     });
   }, [isFocused]);
@@ -90,13 +72,24 @@ export default function Welcome({ route, navigation }) {
   };
 
   const courses = (arr) => {
-    if (!arr) return
+    if (!arr) return;
     let newArr = arr.split(",");
     var loopData = "";
     var i;
     for (i = 0; i < newArr.length; i++) {
-      console.log(newArr[i]);
-      loopData +=newArr[i].replace(/^\s+/g, '') + '\n'
+      loopData += newArr[i].replace(/^\s+/g, "") + "\n";
+    }
+    return loopData;
+  };
+
+  const requirements = (arr) => {
+    if (!arr) return;
+    if (!arr === 'N/A') return 'N/A'
+    let newArr = arr.split("/");
+    var loopData = "";
+    var i;
+    for (i = 0; i < newArr.length; i++) {
+      loopData += newArr[i].replace(/^\s+/g, "") + "\n";
     }
     return loopData;
   };
@@ -106,7 +99,7 @@ export default function Welcome({ route, navigation }) {
       <Card.Content>
         <Title>{programs[key].Field}</Title>
         <Paragraph>{courses(programs[key].programs)}</Paragraph>
-        <Paragraph style={{ marginTop:-10, fontWeight: "bold" }}>
+        <Paragraph style={{ marginTop: -10, fontWeight: "bold" }}>
           {programs[key].TuitionMin} - {programs[key].TuitionMax}
         </Paragraph>
       </Card.Content>
@@ -177,22 +170,21 @@ export default function Welcome({ route, navigation }) {
             <Card style={styles.cards}>
               <Card.Content>
                 <Title>Cross Enrolles</Title>
-                <Paragraph>Requirements Item 1</Paragraph>
-                <Paragraph>Requirements Item 2</Paragraph>
+                <Text>{requirements(schoolData.Requirements.CrossEnrolles)}</Text>
+  
               </Card.Content>
             </Card>
             <Card style={styles.cards}>
               <Card.Content>
                 <Title>Freshmen</Title>
-                <Paragraph>Requirements Item 1</Paragraph>
-                <Paragraph>Requirements Item 2</Paragraph>
+                <Text>{requirements(schoolData.Requirements.Freshmen)}</Text>
               </Card.Content>
             </Card>
             <Card style={styles.cards}>
               <Card.Content>
                 <Title>Second Course</Title>
-                <Paragraph>Requirements Item 1</Paragraph>
-                <Paragraph>Requirements Item 2</Paragraph>
+                <Text>{requirements(schoolData.Requirements.SecondCourse)}</Text>
+
               </Card.Content>
             </Card>
           </View>
