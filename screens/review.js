@@ -17,15 +17,16 @@ import Stars from "react-native-stars";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { getDatabase, ref, onValue, update } from "firebase/database";
+import { Avatar, Card, Title, Paragraph } from "react-native-paper";
 
 export default function Review({ route, navigation }) {
   const nav = useNavigation();
   const { key } = route.params;
 
   const [reviewStar, setReviewStar] = useState(0);
-  const [reviewText, setReviewText] = useState(null)
+  const [reviewText, setReviewText] = useState(null);
+  const [reviews, setReviews] = useState({});
   const [account, setAccount] = useContext(AppStateContext);
-
 
   const navigate = (screen) => {
     navigation.navigate(screen);
@@ -38,34 +39,62 @@ export default function Review({ route, navigation }) {
     onValue(UniRef, (snapshot) => {
       let value = snapshot.val();
       console.log(value);
+      setReviews(value);
     });
   }, [isFocused]);
 
   const postReview = () => {
     if (!reviewText) {
-      alert('Comment Empty!')
-      return
+      alert("Comment Empty!");
+      return;
     }
     const db = getDatabase();
 
     console.log(reviewStar, reviewText, account.Uid);
-    let review ={
+    let review = {
       Uid: account.Uid,
-      comment:reviewText,
-      name:account.firstName,
-      rating:reviewStar
-    
-    }
-    let updates = {}
-    updates[
-      "university/" + key + "/reviews/" + account.Uid
-    ] = review;
+      comment: reviewText,
+      name: account.firstName,
+      rating: reviewStar,
+    };
+    let updates = {};
+    updates["university/" + key + "/reviews/" + account.Uid] = review;
     update(ref(db), updates)
       .then(() => {
-        console.log('updated')
+        console.log("updated");
       })
       .catch(() => {});
   };
+
+  const tifOptions = Object.keys(reviews).map((key) => (
+    <Card style={{ marginBottom: 20 }} key={key}>
+      <Card.Content>
+        <Title>{reviews[key].comment}</Title>
+        <View style={{alignItems:'flex-start'}}>
+          <Stars
+            default={parseInt(reviews[key].rating)}
+            count={5}
+            style={{ alignSelf: "left" }}
+            fullStar={
+              <Icon name={"star"} size={20} style={[styles.myStarStyle]} />
+            }
+            emptyStar={
+              <Icon
+                name={"star-outline"}
+                size={20}
+                style={styles.myStarStyle}
+              />
+            }
+            halfStar={
+              <Icon name={"star-half"} size={20} style={[styles.myStarStyle]} />
+            }
+          />
+        </View>
+
+        <Paragraph>{reviews[key].name}</Paragraph>
+      </Card.Content>
+    </Card>
+  ));
 
   return (
     <SafeAreaView style={styles.container}>
@@ -106,6 +135,7 @@ export default function Review({ route, navigation }) {
             <Text style={styles.btnText}>POST REVIEW</Text>
           </TouchableHighlight>
         </View>
+        <View>{tifOptions}</View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -135,7 +165,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     backgroundColor: "#fff",
     marginBottom: 20,
-    textAlignVertical:'top'
+    textAlignVertical: "top",
   },
   myStarStyle: {
     color: "yellow",
