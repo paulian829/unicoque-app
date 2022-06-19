@@ -13,6 +13,8 @@ import {
 import { SearchBar } from "react-native-elements";
 
 import { useNavigation, useIsFocused } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Stars from "react-native-stars";
 
 import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
 import { getDatabase, ref, onValue } from "firebase/database";
@@ -86,10 +88,25 @@ export default function Welcome({ navigation }) {
     navigation.navigate(screen, { key: key });
   };
 
+  const getScore = (reviews) => {
+    if (!reviews){
+      return 0
+    }
+    let score = 0;
+    let count=0
+    for (let review in reviews) {
+      console.log()
+      score = reviews[review].rating + score;
+      count ++
+    }
+    
+
+    return score/count
+  };
   const tifOptions = Object.keys(schoolData).map((key) => (
     <Card
       style={{ marginBottom: 20 }}
-      onPress={() => clickSchool("SchoolView",schoolData[key].Uid)}
+      onPress={() => clickSchool("SchoolView", schoolData[key].Uid)}
       key={key}
     >
       <Card.Cover
@@ -103,6 +120,20 @@ export default function Welcome({ navigation }) {
       />
       <Card.Content>
         <Title>{schoolData[key].Name}</Title>
+        <Stars
+          disabled={true}
+          default={getScore(schoolData[key].reviews)}
+          count={5}
+          fullStar={
+            <Icon name={"star"} size={40} style={[styles.myStarStyle]} />
+          }
+          emptyStar={
+            <Icon name={"star-outline"} size={40} style={styles.myStarStyle} />
+          }
+          halfStar={
+            <Icon name={"star-half"} size={40} style={[styles.myStarStyle]} />
+          }
+        />
         <Paragraph>{schoolData[key].Address.City}</Paragraph>
       </Card.Content>
     </Card>
@@ -139,5 +170,15 @@ const styles = StyleSheet.create({
   padding: {
     padding: 20,
     marginBottom: 30,
+  },
+  myStarStyle: {
+    color: "yellow",
+    backgroundColor: "transparent",
+    textShadowColor: "black",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
+  myEmptyStarStyle: {
+    color: "white",
   },
 });

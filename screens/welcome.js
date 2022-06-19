@@ -28,13 +28,17 @@ export default function Welcome({ navigation }) {
             icon="magnify"
             color={Colors.red500}
             size={30}
-            onPress={() => navigate("Search")}
+            onPress={() =>
+              navigation.navigate("Search School", { screen: "Search" })
+            }
           />
           <IconButton
             icon="account"
             color={Colors.red500}
             size={30}
-            onPress={() => navigate("Profile")}
+            onPress={() =>
+              navigation.navigate("Search School", { screen: "Search" })
+            }
           />
         </View>
       ),
@@ -91,7 +95,9 @@ export default function Welcome({ navigation }) {
           <View style={styles.btnContainerCenter}>
             <TouchableHighlight
               style={styles.btn}
-              onPress={() => alert("Search!")}
+              onPress={() =>
+                navigation.navigate("Search School", { screen: "Search" })
+              }
               activeOpacity={0.4}
               underlayColor="#e7decc"
             >

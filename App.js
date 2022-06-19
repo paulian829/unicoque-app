@@ -57,18 +57,64 @@ function Dashboard() {
         component={Profile}
         options={headerLogo()}
       />
-      <Drawer.Screen name="Search" component={Search} options={headerLogo()} />
       <Drawer.Screen
-        name="SchoolView"
-        component={SchoolView}
+        name="Search School"
+        component={SchoolViewGroup}
         options={headerLogo()}
       />
-      <Drawer.Screen name="Review" component={Review} options={headerLogo()} />
-      <Drawer.Screen name="ArticlesList" component={ArticlesList} options={headerLogo()} />
-      <Drawer.Screen name="Article" component={Article} options={headerLogo()} />
-
-
     </Drawer.Navigator>
+  );
+}
+
+function SchoolViewGroup() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Search"
+        component={Search}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+      <Stack.Screen
+        name="SchoolView"
+        component={SchoolView}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+      <Stack.Screen
+        name="Review"
+        component={Review}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+      <Stack.Screen
+        name="ArticlesList"
+        component={ArticlesList}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+      <Stack.Screen
+        name="Article"
+        component={Article}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+    </Stack.Navigator>
   );
 }
 
