@@ -114,7 +114,8 @@ export default function Welcome({ route, navigation }) {
         <View style={styles.container}>
           <View style={styles.topContainer}>
             <View style={styles.buttonContainer}>
-              <Button title="Articles" color={'#FF9829'}/>
+              <Button title="Articles" color={'#FF9829'} onPress={() => navigate('ArticlesList',key)}/>
+
             </View>
             <View style={styles.buttonContainer}>
               <Button title="Review" color={'#FF9829'} onPress={() => navigate('Review',key)}/>

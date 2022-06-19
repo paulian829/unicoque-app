@@ -62,6 +62,8 @@ export default function Review({ route, navigation }) {
     update(ref(db), updates)
       .then(() => {
         console.log("updated");
+        setReviewStar(null)
+        setReviewText(0)
       })
       .catch(() => {});
   };
