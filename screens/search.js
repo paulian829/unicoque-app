@@ -24,12 +24,10 @@ export default function Welcome({ navigation }) {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    console.log("Running test");
     const db = getDatabase();
     const UniRef = ref(db, "university/");
     onValue(UniRef, (snapshot) => {
       const allSchools = snapshot.val();
-      console.log(typeof allSchools);
       let arr = [];
       for (let key in allSchools) {
         arr.push(allSchools[key]);
@@ -85,7 +83,6 @@ export default function Welcome({ navigation }) {
     navigation.navigate(screen);
   };
   const clickSchool = (screen, key) => {
-    console.log(key)
     navigation.navigate(screen, { key: key });
   };
 
