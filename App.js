@@ -7,6 +7,7 @@ import Profile from "./screens/profile";
 import Search from "./screens/search";
 import SchoolView from "./screens/schoolView";
 import Register from "./screens/register";
+import { IconButton, Colors } from "react-native-paper";
 
 import "react-native-gesture-handler";
 
@@ -14,7 +15,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { Image, Button, View } from "react-native";
+import { Image, Button, View, TouchableHighlight} from "react-native";
 import AppStateProvider from "./Context";
 import Review from "./screens/review";
 import ArticlesList from "./screens/articles-list";
@@ -27,16 +28,34 @@ function navigate(screen) {
   navigation.navigate("Profile");
 }
 
-function headerLogo() {
+function headerLogo(navigation) {
   let options = {
     headerTitle: (
       props // App Logo
     ) => (
-      <Image
-        style={{ width: 150, height: 50 }}
-        source={require("./assets/uniqueco-logo.png")}
-        resizeMode="contain"
-      />
+      <TouchableHighlight onPress={() => navigation.navigate("Welcome")} underlayColor={false}>
+        <Image
+          style={{ width: 150, height: 50 }}
+          source={require("./assets/uniqueco-logo.png")}
+          resizeMode="contain"
+        />
+      </TouchableHighlight>
+    ),
+    headerRight: () => (
+      <View style={{ flexDirection: "row" }}>
+        <IconButton
+          icon="magnify"
+          color={Colors.red500}
+          size={30}
+          onPress={() => navigation.navigate("Search")}
+        />
+        <IconButton
+          icon="account"
+          color={Colors.red500}
+          size={30}
+          onPress={() => navigation.navigate("Profile")}
+        />
+      </View>
     ),
   };
 
@@ -49,18 +68,18 @@ function Dashboard() {
       <Drawer.Screen
         name="Welcome"
         component={Welcome}
-        options={headerLogo()}
+        options={({ navigation }) => headerLogo(navigation)}
         // <Drawer.Screen name="Welcome" component={Welcome}
       />
       <Drawer.Screen
         name="Profile"
         component={Profile}
-        options={headerLogo()}
+        options={({ navigation }) => headerLogo(navigation)}
       />
       <Drawer.Screen
         name="Search School"
         component={SchoolViewGroup}
-        options={headerLogo()}
+        options={({ navigation }) => headerLogo(navigation)}
       />
     </Drawer.Navigator>
   );

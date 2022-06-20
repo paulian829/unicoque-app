@@ -71,27 +71,27 @@ export default function Welcome({ navigation }) {
     setSchoolData(results);
   }, [searchValue]);
 
-  const nav = useNavigation();
-  useEffect(() => {
-    nav.setOptions({
-      headerRight: () => (
-        <View style={{ flexDirection: "row" }}>
-          <IconButton
-            icon="magnify"
-            color={Colors.red500}
-            size={30}
-            onPress={() => navigate("Search")}
-          />
-          <IconButton
-            icon="account"
-            color={Colors.red500}
-            size={30}
-            onPress={() => navigate("Profile")}
-          />
-        </View>
-      ),
-    });
-  });
+  // const nav = useNavigation();
+  // useEffect(() => {
+  //   nav.setOptions({
+  //     headerRight: () => (
+  //       <View style={{ flexDirection: "row" }}>
+  //         <IconButton
+  //           icon="magnify"
+  //           color={Colors.red500}
+  //           size={30}
+  //           onPress={() => navigate("Search")}
+  //         />
+  //         <IconButton
+  //           icon="account"
+  //           color={Colors.red500}
+  //           size={30}
+  //           onPress={() => navigate("Profile")}
+  //         />
+  //       </View>
+  //     ),
+  //   });
+  // });
 
   const navigate = (screen) => {
     navigation.navigate(screen);
