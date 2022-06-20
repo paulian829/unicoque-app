@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { IconButton, Colors } from "react-native-paper";
 
 import {
@@ -9,8 +9,11 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableHighlight,
+  Pressable,
+  ToastAndroid,
 } from "react-native";
 import { SearchBar } from "react-native-elements";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -18,12 +21,15 @@ import Stars from "react-native-stars";
 
 import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
 import { getDatabase, ref, onValue } from "firebase/database";
+import { AppStateContext } from "../Context";
 
 export default function Welcome({ navigation }) {
   const [searchValue, setSearchValue] = useState("");
   const [schoolData, setSchoolData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const isFocused = useIsFocused();
+  const [liked, setLiked] = useState(false);
+  const [account] = useContext(AppStateContext);
 
   useEffect(() => {
     const db = getDatabase();
@@ -40,7 +46,13 @@ export default function Welcome({ navigation }) {
       setSchoolData([...arr]);
       // setOriginalData(allSchools);
     });
+
+    console.log(account);
   }, [isFocused]);
+
+  //   const checkIfFavorite = (key) => {
+  // if(account.)
+  //   };
 
   useEffect(() => {
     let results = {};
@@ -89,19 +101,18 @@ export default function Welcome({ navigation }) {
   };
 
   const getScore = (reviews) => {
-    if (!reviews){
-      return 0
+    if (!reviews) {
+      return 0;
     }
     let score = 0;
-    let count=0
+    let count = 0;
     for (let review in reviews) {
-      console.log()
+      console.log();
       score = reviews[review].rating + score;
-      count ++
+      count++;
     }
-    
 
-    return score/count
+    return score / count;
   };
   const tifOptions = Object.keys(schoolData).map((key) => (
     <Card
@@ -120,20 +131,41 @@ export default function Welcome({ navigation }) {
       />
       <Card.Content>
         <Title>{schoolData[key].Name}</Title>
-        <Stars
-          disabled={true}
-          default={getScore(schoolData[key].reviews)}
-          count={5}
-          fullStar={
-            <Icon name={"star"} size={40} style={[styles.myStarStyle]} />
-          }
-          emptyStar={
-            <Icon name={"star-outline"} size={40} style={styles.myStarStyle} />
-          }
-          halfStar={
-            <Icon name={"star-half"} size={40} style={[styles.myStarStyle]} />
-          }
-        />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Stars
+            disabled={true}
+            default={getScore(schoolData[key].reviews)}
+            count={5}
+            fullStar={
+              <Icon name={"star"} size={40} style={[styles.myStarStyle]} />
+            }
+            emptyStar={
+              <Icon
+                name={"star-outline"}
+                size={40}
+                style={styles.myStarStyle}
+              />
+            }
+            halfStar={
+              <Icon name={"star-half"} size={40} style={[styles.myStarStyle]} />
+            }
+          />
+          <Pressable onPress={() => setLiked((isLiked) => !isLiked)}>
+            <MaterialCommunityIcons
+              name={liked ? "heart" : "heart-outline"}
+              size={32}
+              color={liked ? "red" : "black"}
+            />
+          </Pressable>
+        </View>
+
         <Paragraph>{schoolData[key].Address.City}</Paragraph>
       </Card.Content>
     </Card>

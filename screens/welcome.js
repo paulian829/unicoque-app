@@ -37,7 +37,7 @@ export default function Welcome({ navigation }) {
             color={Colors.red500}
             size={30}
             onPress={() =>
-              navigation.navigate("Search School", { screen: "Search" })
+              navigation.navigate("Profile")
             }
           />
         </View>
