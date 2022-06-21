@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  useCallback,
+} from "react";
 import { IconButton, Colors } from "react-native-paper";
 
 import {
@@ -14,6 +20,7 @@ import {
 } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import DropDownPicker from "react-native-dropdown-picker";
 
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -31,6 +38,13 @@ export default function Match({ navigation }) {
   const [liked, setLiked] = useState(false);
   const [account] = useContext(AppStateContext);
   const [favorite, setFavorite] = useState({});
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("Public");
+  const [items, setItems] = useState([
+    { label: "Public", value: "Public" },
+    { label: "Private", value: "Private" },
+  ]);
 
   useEffect(() => {
     const db = getDatabase();
@@ -186,17 +200,15 @@ export default function Match({ navigation }) {
         <View style={styles.padding}>
           <Text style={styles.heading}>Find University Match</Text>
           <Text style={styles.headingOne}>School Type</Text>
-          <SearchBar
-            placeholder="Search here..."
-            // value={searchValue}
-            // onChangeText={(value) => setSearchValue(value)}
-            inputStyle={{ backgroundColor: "white", color: "black" }}
-            containerStyle={{
-              backgroundColor: "white",
-              borderWidth: 1,
-              borderRadius: 5,
-            }}
-            inputContainerStyle={{ backgroundColor: "white" }}
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            theme="LIGHT"
+            style={{ height: 65 }}
           />
           <Text style={styles.headingOne}>Location</Text>
           <SearchBar
@@ -211,6 +223,40 @@ export default function Match({ navigation }) {
             }}
             inputContainerStyle={{ backgroundColor: "white" }}
           />
+          <Text style={styles.headingOne}>Programs</Text>
+          <SearchBar
+            placeholder="Search here..."
+            // value={searchValue}
+            // onChangeText={(value) => setSearchValue(value)}
+            inputStyle={{ backgroundColor: "white", color: "black" }}
+            containerStyle={{
+              backgroundColor: "white",
+              borderWidth: 1,
+              borderRadius: 5,
+            }}
+            inputContainerStyle={{ backgroundColor: "white" }}
+          />
+          <Text style={styles.headingOne}>Tuition Fee Range</Text>
+          <SearchBar
+            placeholder="Search here..."
+            // value={searchValue}
+            // onChangeText={(value) => setSearchValue(value)}
+            inputStyle={{ backgroundColor: "white", color: "black" }}
+            containerStyle={{
+              backgroundColor: "white",
+              borderWidth: 1,
+              borderRadius: 5,
+            }}
+            inputContainerStyle={{ backgroundColor: "white" }}
+          />
+          <TouchableHighlight
+            style={styles.btn}
+            onPress={() => saveData()}
+            activeOpacity={0.4}
+            underlayColor="#e7decc"
+          >
+            <Text style={styles.btnText}>FIND A MATCH</Text>
+          </TouchableHighlight>
           <View style={{ paddingVertical: 20 }}>{tifOptions}</View>
         </View>
       </ScrollView>
@@ -247,6 +293,20 @@ const styles = StyleSheet.create({
     fontSize: 22,
     // fontWeight: "bold",
     textAlign: "left",
-    marginTop:10
+    marginTop: 10,
+  },
+  btn: {
+    marginTop: 20,
+    marginBottom: 50,
+    width: "100%",
+    backgroundColor: "#FF9829",
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  btnText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
   },
 });
