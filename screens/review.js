@@ -74,6 +74,7 @@ export default function Review({ route, navigation }) {
         <Title>{reviews[key].comment}</Title>
         <View style={{alignItems:'flex-start'}}>
           <Stars
+          disabled={true}
             default={parseInt(reviews[key].rating)}
             count={5}
             style={{ alignSelf: "left" }}
@@ -111,9 +112,11 @@ export default function Review({ route, navigation }) {
         />
         <View style={{ alignItems: "center" }}>
           <Stars
+
             default={reviewStar}
             count={5}
             update={(value) => setReviewStar(value)}
+            
             fullStar={
               <Icon name={"star"} size={40} style={[styles.myStarStyle]} />
             }
