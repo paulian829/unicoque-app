@@ -17,6 +17,7 @@ import {
   TouchableHighlight,
   Pressable,
   ToastAndroid,
+  TextInput,
 } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -45,6 +46,10 @@ export default function Match({ navigation }) {
     { label: "Public", value: "Public" },
     { label: "Private", value: "Private" },
   ]);
+
+  const [location, setLoacation] = useState("");
+  const [program, setProgram] = useState("");
+  const [maxRange, setMaxRange] = useState(0);
 
   useEffect(() => {
     const db = getDatabase();
@@ -194,6 +199,45 @@ export default function Match({ navigation }) {
     </Card>
   ));
 
+  const findMatch = () => {
+    let resultObj = {};
+    let allAddress = "";
+    for (let item in schoolData) {
+      let uid = schoolData[item].Uid;
+      allAddress = JSON.stringify(schoolData[item].Address);
+
+      let programsList = [];
+      let highest = 0;
+      let programsOffered = schoolData[item].ProgramsOffered;
+      for (let programx in programsOffered) {
+        programsList.push(programsOffered[programx].Field);
+        let TuitionMax = programsOffered[programx].TuitionMax;
+        TuitionMax
+          ? (TuitionMax = TuitionMax.replace(/[^a-zA-Z0-9 ]/g, ""))
+          : (TuitionMax = "0");
+        TuitionMax = parseInt(TuitionMax);
+        TuitionMax > highest ? (highest = TuitionMax) : highest;
+      }
+      let program_str = programsList.toString().toLowerCase();
+
+      console.log(
+        allAddress.toLocaleLowerCase().includes(location.toLowerCase()),
+        schoolData[item].schoolType === value,
+        highest >= maxRange,
+        program_str.includes(program),
+
+      );
+      if (
+        allAddress.toLocaleLowerCase().includes(location.toLowerCase()) &&
+        schoolData[item].schoolType === value &&
+        highest >= maxRange &&
+        program_str.includes(program)
+      ) {
+        resultObj[uid] = schoolData[item];
+      }
+      console.log(resultObj);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -208,50 +252,35 @@ export default function Match({ navigation }) {
             setValue={setValue}
             setItems={setItems}
             theme="LIGHT"
-            style={{ height: 65 }}
+            style={{ height: 60, fontSize: 18 }}
           />
           <Text style={styles.headingOne}>Location</Text>
-          <SearchBar
-            placeholder="Search here..."
-            // value={searchValue}
-            // onChangeText={(value) => setSearchValue(value)}
-            inputStyle={{ backgroundColor: "white", color: "black" }}
-            containerStyle={{
-              backgroundColor: "white",
-              borderWidth: 1,
-              borderRadius: 5,
-            }}
-            inputContainerStyle={{ backgroundColor: "white" }}
+          <TextInput
+            style={styles.input}
+            onChangeText={(location) => setLoacation(location)}
+            value={location}
           />
+
           <Text style={styles.headingOne}>Programs</Text>
-          <SearchBar
-            placeholder="Search here..."
-            // value={searchValue}
-            // onChangeText={(value) => setSearchValue(value)}
-            inputStyle={{ backgroundColor: "white", color: "black" }}
-            containerStyle={{
-              backgroundColor: "white",
-              borderWidth: 1,
-              borderRadius: 5,
-            }}
-            inputContainerStyle={{ backgroundColor: "white" }}
+          <TextInput
+            style={styles.input}
+            onChangeText={(program) => setProgram(program)}
+            value={program}
           />
-          <Text style={styles.headingOne}>Tuition Fee Range</Text>
-          <SearchBar
-            placeholder="Search here..."
-            // value={searchValue}
-            // onChangeText={(value) => setSearchValue(value)}
-            inputStyle={{ backgroundColor: "white", color: "black" }}
-            containerStyle={{
-              backgroundColor: "white",
-              borderWidth: 1,
-              borderRadius: 5,
-            }}
-            inputContainerStyle={{ backgroundColor: "white" }}
+
+          <Text style={styles.headingOne}>Maximum Tuition Fee (PHP)</Text>
+          <TextInput
+            style={styles.input}
+            fontSize={30}
+            onChangeText={(maxRange) =>
+              setMaxRange(parseFloat(maxRange.replace(/[^0-9]/g, "")))
+            }
+            value={maxRange}
+            keyboardType={"number-pad"}
           />
           <TouchableHighlight
             style={styles.btn}
-            onPress={() => saveData()}
+            onPress={() => findMatch()}
             activeOpacity={0.4}
             underlayColor="#e7decc"
           >
@@ -308,5 +337,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff",
     textAlign: "center",
+  },
+  input: {
+    height: 60,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 4,
+    backgroundColor: "white",
+    fontSize: 16,
   },
 });
