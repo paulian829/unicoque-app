@@ -15,12 +15,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { Image, Button, View, TouchableHighlight} from "react-native";
+import { Image, Button, View, TouchableHighlight } from "react-native";
 import AppStateProvider from "./Context";
 import Review from "./screens/review";
 import ArticlesList from "./screens/articles-list";
 import Article from "./screens/article";
 import Favorite from "./screens/favorites";
+import Match from "./screens/match";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -34,7 +35,10 @@ function headerLogo(navigation) {
     headerTitle: (
       props // App Logo
     ) => (
-      <TouchableHighlight onPress={() => navigation.navigate("Welcome")} underlayColor={false}>
+      <TouchableHighlight
+        onPress={() => navigation.navigate("Welcome")}
+        underlayColor={false}
+      >
         <Image
           style={{ width: 150, height: 50 }}
           source={require("./assets/uniqueco-logo.png")}
@@ -86,7 +90,11 @@ function Dashboard() {
         name="Favorites"
         component={Favorite}
         options={({ navigation }) => headerLogo(navigation)}
-
+      />
+      <Drawer.Screen
+        name="Match"
+        component={Match}
+        options={({ navigation }) => headerLogo(navigation)}
       />
     </Drawer.Navigator>
   );
