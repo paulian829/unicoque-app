@@ -20,6 +20,7 @@ import AppStateProvider from "./Context";
 import Review from "./screens/review";
 import ArticlesList from "./screens/articles-list";
 import Article from "./screens/article";
+import Favorite from "./screens/favorites";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -80,6 +81,12 @@ function Dashboard() {
         name="Search School"
         component={SchoolViewGroup}
         options={({ navigation }) => headerLogo(navigation)}
+      />
+      <Drawer.Screen
+        name="Favorites"
+        component={Favorite}
+        options={({ navigation }) => headerLogo(navigation)}
+
       />
     </Drawer.Navigator>
   );
