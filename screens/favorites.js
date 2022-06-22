@@ -69,7 +69,7 @@ export default function Favorite({ navigation }) {
         results[item] = originalData[item];
       }
     }
-    setSchoolData(results);
+    setSchoolData({...results});
   }, [searchValue]);
 
   const navigate = (screen) => {
