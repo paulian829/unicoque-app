@@ -59,7 +59,7 @@ export default function Welcome({ navigation }) {
     let results = {};
     let search = searchValue;
     if (search.length === 0) {
-      setSchoolData(originalData);
+      setSchoolData([...originalData]);
       return;
     }
     for (let item in originalData) {
@@ -69,7 +69,7 @@ export default function Welcome({ navigation }) {
         results[item] = originalData[item];
       }
     }
-    setSchoolData(results);
+    setSchoolData([...results]);
   }, [searchValue]);
 
   const navigate = (screen) => {

@@ -39,6 +39,7 @@ export default function Match({ navigation }) {
   const [liked, setLiked] = useState(false);
   const [account] = useContext(AppStateContext);
   const [favorite, setFavorite] = useState({});
+  const scrollViewRef = useRef();
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("Public");
@@ -49,7 +50,7 @@ export default function Match({ navigation }) {
 
   const [location, setLoacation] = useState("");
   const [program, setProgram] = useState("");
-  const [maxRange, setMaxRange] = useState(0);
+  const [maxRange, setMaxRange] = useState("asdasd");
 
   useEffect(() => {
     const db = getDatabase();
@@ -62,28 +63,28 @@ export default function Match({ navigation }) {
       }
       setOriginalData([...arr]);
 
-      setSchoolData([...arr]);
+      // setSchoolData([...arr]);
     });
 
     setFavorite({ ...account.Favorite });
   }, [isFocused]);
 
-  useEffect(() => {
-    let results = {};
-    let search = searchValue;
-    if (search.length === 0) {
-      setSchoolData(originalData);
-      return;
-    }
-    for (let item in originalData) {
-      let schoolName = originalData[item].Name;
-      schoolName = schoolName.toLowerCase();
-      if (schoolName.includes(search.toLowerCase())) {
-        results[item] = originalData[item];
-      }
-    }
-    setSchoolData(results);
-  }, [searchValue]);
+  // useEffect(() => {
+  //   let results = {};
+  //   let search = searchValue;
+  //   if (search.length === 0) {
+  //     setSchoolData(originalData);
+  //     return;
+  //   }
+  //   for (let item in originalData) {
+  //     let schoolName = originalData[item].Name;
+  //     schoolName = schoolName.toLowerCase();
+  //     if (schoolName.includes(search.toLowerCase())) {
+  //       results[item] = originalData[item];
+  //     }
+  //   }
+  //   setSchoolData(results);
+  // }, [searchValue]);
 
   const navigate = (screen) => {
     navigation.navigate(screen);
@@ -202,13 +203,13 @@ export default function Match({ navigation }) {
   const findMatch = () => {
     let resultObj = {};
     let allAddress = "";
-    for (let item in schoolData) {
-      let uid = schoolData[item].Uid;
-      allAddress = JSON.stringify(schoolData[item].Address);
+    for (let item in originalData) {
+      let uid = originalData[item].Uid;
+      allAddress = JSON.stringify(originalData[item].Address);
 
       let programsList = [];
       let highest = 0;
-      let programsOffered = schoolData[item].ProgramsOffered;
+      let programsOffered = originalData[item].ProgramsOffered;
       for (let programx in programsOffered) {
         programsList.push(programsOffered[programx].Field);
         let TuitionMax = programsOffered[programx].TuitionMax;
@@ -219,35 +220,32 @@ export default function Match({ navigation }) {
         TuitionMax > highest ? (highest = TuitionMax) : highest;
       }
       let program_str = programsList.toString().toLowerCase();
-
-      console.log(
-        allAddress.toLocaleLowerCase().includes(location.toLowerCase()),
-        schoolData[item].schoolType === value,
-        highest >= maxRange,
-        program_str.includes(program),
-
-      );
       if (
         allAddress.toLocaleLowerCase().includes(location.toLowerCase()) &&
-        schoolData[item].schoolType === value &&
-        highest >= maxRange &&
+        originalData[item].schoolType === value &&
+        highest <= maxRange &&
         program_str.includes(program)
       ) {
-        resultObj[uid] = schoolData[item];
+        resultObj[uid] = originalData[item];
       }
-      console.log(resultObj);
+      scrollViewRef.current.scrollToEnd({ animated: true });
+
+      setSchoolData({ ...resultObj });
     }
   };
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView ref={scrollViewRef}>
         <View style={styles.padding}>
           <Text style={styles.heading}>Find University Match</Text>
           <Text style={styles.headingOne}>School Type</Text>
           <DropDownPicker
             open={open}
             value={value}
-            items={items}
+            items={[
+              { label: "Public", value: "Public" },
+              { label: "Private", value: "Private" },
+            ]}
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}

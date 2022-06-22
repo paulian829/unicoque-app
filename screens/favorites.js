@@ -59,7 +59,7 @@ export default function Favorite({ navigation }) {
     let results = {};
     let search = searchValue;
     if (search.length === 0) {
-      setSchoolData(originalData);
+      setSchoolData({...originalData});
       return;
     }
     for (let item in originalData) {
