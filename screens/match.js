@@ -50,7 +50,7 @@ export default function Match({ navigation }) {
 
   const [location, setLoacation] = useState("");
   const [program, setProgram] = useState("");
-  const [maxRange, setMaxRange] = useState("asdasd");
+  const [maxRange, setMaxRange] = useState(0);
 
   useEffect(() => {
     const db = getDatabase();
@@ -61,7 +61,7 @@ export default function Match({ navigation }) {
       for (let key in allSchools) {
         arr.push(allSchools[key]);
       }
-      setOriginalData([...arr]);
+      setOriginalData({...arr});
 
       // setSchoolData([...arr]);
     });
@@ -90,7 +90,9 @@ export default function Match({ navigation }) {
     navigation.navigate(screen);
   };
   const clickSchool = (screen, key) => {
-    navigation.navigate(screen, { key: key });
+    // navigation.navigate(screen, { key: key });
+    navigation.navigate('Search School', { screen: 'SchoolView', key:key });
+
   };
 
   const getScore = (reviews) => {
@@ -203,6 +205,10 @@ export default function Match({ navigation }) {
   const findMatch = () => {
     let resultObj = {};
     let allAddress = "";
+
+    if (maxRange == 0 ){
+      setMaxRange(999999999)
+    }
     for (let item in originalData) {
       let uid = originalData[item].Uid;
       allAddress = JSON.stringify(originalData[item].Address);
