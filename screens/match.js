@@ -90,8 +90,8 @@ export default function Match({ navigation }) {
     navigation.navigate(screen);
   };
   const clickSchool = (screen, key) => {
-    // navigation.navigate(screen, { key: key });
-    navigation.navigate('Search School', { screen: 'SchoolView', key:key });
+    navigation.navigate(screen, { key: key });
+    // navigation.navigate('Search School', { screen: 'SchoolView', key: key });
 
   };
 

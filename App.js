@@ -22,13 +22,11 @@ import ArticlesList from "./screens/articles-list";
 import Article from "./screens/article";
 import Favorite from "./screens/favorites";
 import Match from "./screens/match";
+import CustomDrawer from "./components/customDrawer";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
-function navigate(screen) {
-  navigation.navigate("Profile");
-}
 
 function headerLogo(navigation) {
   let options = {
@@ -69,12 +67,21 @@ function headerLogo(navigation) {
 
 function Dashboard() {
   return (
-    <Drawer.Navigator initialRouteName="Welcome">
+    <Drawer.Navigator initialRouteName="Welcome"
+      drawerContent={(props) => <CustomDrawer {...props} />}
+      screenOptions={{
+        drawerActiveBackgroundColor: "#FF9829",
+        drawerActiveTintColor: "#fff",
+        drawerInactiveTintColor: "#333",
+        drawerLabelStyle: {
+          fontSize: 15,
+        },
+      }}
+    >
       <Drawer.Screen
         name="Welcome"
         component={Welcome}
         options={({ navigation }) => headerLogo(navigation)}
-        // <Drawer.Screen name="Welcome" component={Welcome}
       />
       <Drawer.Screen
         name="Profile"
@@ -88,18 +95,124 @@ function Dashboard() {
       />
       <Drawer.Screen
         name="Favorites"
-        component={Favorite}
+        component={FavoriteViewGroup}
         options={({ navigation }) => headerLogo(navigation)}
       />
       <Drawer.Screen
         name="Match"
-        component={Match}
+        component={MatchViewGroup}
         options={({ navigation }) => headerLogo(navigation)}
       />
     </Drawer.Navigator>
   );
 }
 
+function MatchViewGroup() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Match"
+        component={Match}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+      <Stack.Screen
+        name="SchoolView"
+        component={SchoolView}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+      <Stack.Screen
+        name="Review"
+        component={Review}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+      <Stack.Screen
+        name="ArticlesList"
+        component={ArticlesList}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+      <Stack.Screen
+        name="Article"
+        component={Article}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+
+
+
+function FavoriteViewGroup() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Favorite"
+        component={Favorite}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+      <Stack.Screen
+        name="SchoolView"
+        component={SchoolView}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+      <Stack.Screen
+        name="Review"
+        component={Review}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+      <Stack.Screen
+        name="ArticlesList"
+        component={ArticlesList}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+      <Stack.Screen
+        name="Article"
+        component={Article}
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: false,
+          swipeEdgeWidth: 0,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 function SchoolViewGroup() {
   return (
     <Stack.Navigator>

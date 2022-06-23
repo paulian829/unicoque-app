@@ -24,7 +24,6 @@ import { getDatabase, ref, onValue , update} from "firebase/database";
 import { AppStateContext } from "../Context";
 
 export default function Favorite({ navigation }) {
-  const [searchValue, setSearchValue] = useState("");
   const [schoolData, setSchoolData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const isFocused = useIsFocused();
@@ -42,35 +41,15 @@ export default function Favorite({ navigation }) {
         arr.push(allSchools[key]);
       }
       // allSchools.forEach(item => {console.log('test')})
-      setOriginalData([...arr]);
+      setOriginalData({...arr});
 
-      setSchoolData([...arr]);
+      setSchoolData({...arr});
       // setOriginalData(allSchools);
     });
-
-    setFavorite({ ...account.Favorite });
+    let fav = account.Favorite
+    setFavorite({...fav});
   }, [isFocused]);
 
-  //   const checkIfFavorite = (key) => {
-  // if(account.)
-  //   };
-
-  useEffect(() => {
-    let results = {};
-    let search = searchValue;
-    if (search.length === 0) {
-      setSchoolData({...originalData});
-      return;
-    }
-    for (let item in originalData) {
-      let schoolName = originalData[item].Name;
-      schoolName = schoolName.toLowerCase();
-      if (schoolName.includes(search.toLowerCase())) {
-        results[item] = originalData[item];
-      }
-    }
-    setSchoolData({...results});
-  }, [searchValue]);
 
   const navigate = (screen) => {
     navigation.navigate(screen);
