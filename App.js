@@ -23,6 +23,7 @@ import Article from "./screens/article";
 import Favorite from "./screens/favorites";
 import Match from "./screens/match";
 import CustomDrawer from "./components/customDrawer";
+import University from "./screens/university";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -89,6 +90,14 @@ export default function App() {
           component={Profile}
           options={({ navigation }) => headerLogo(navigation)}
         />
+        <Drawer.Screen 
+          name="University"
+          component={University}
+          options={({ navigation }) => headerLogo(navigation)}
+
+        />
+
+
         <Drawer.Screen
           name="Search School"
           component={SchoolViewGroup}
@@ -104,6 +113,7 @@ export default function App() {
           component={MatchViewGroup}
           options={({ navigation }) => headerLogo(navigation)}
         />
+
       </Drawer.Navigator>
     );
   };
