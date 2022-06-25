@@ -54,6 +54,14 @@ export default function University({ navigation }) {
       Zipcode: "",
       gmap: "",
     },
+    ProgramsOffered: {
+      randomID1: {
+        Field: "",
+        TuitionMax: "",
+        TuitionMin: "",
+        programs: "",
+      },
+    },
   });
 
   const navigate = (screen) => {
@@ -118,6 +126,85 @@ export default function University({ navigation }) {
     updateData(value, "schoolType");
   }, [value]);
 
+  const programsList = Object.keys(data.ProgramsOffered).map((key) => (
+    <View
+      key={key}
+      style={{ marginTop: 20, marginBottom: 30, borderBottomWidth: 1 }}
+    >
+      <TextInput
+        label={"Field Name"}
+        style={styles.formGroupInput}
+        value={data.ProgramsOffered[key].Field}
+        onChangeText={(value) => onUpdateProgram(value, key, "Field")}
+      />
+      <TextInput
+        label={"Minimum Tuition Fee"}
+        style={styles.formGroupInput}
+        value={data.ProgramsOffered[key].TuitionMin}
+        onChangeText={(value) => onUpdateProgram(value, key, "TuitionMin")}
+      />
+      <TextInput
+        label={"Minimum Tuition Fee"}
+        style={styles.formGroupInput}
+        value={data.ProgramsOffered[key].TuitionMax}
+        onChangeText={(value) => onUpdateProgram(value, key, "TuitionMax")}
+      />
+      <TextInput
+        label={"Programs"}
+        style={styles.formGroupInput}
+        multiline
+        value={data.ProgramsOffered[key].programs}
+        onChangeText={(value) => onUpdateProgram(value, key, "programs")}
+        // value={data.ProgramsOffered[key].programs}
+      />
+      <View style={{marginBottom:20, alignItems:'center'}}>
+        <TouchableHighlight
+          style={styles.btnRemove}
+          onPress={() => removeProgram(key)}
+          //   onPress={() => console.log(data)}
+          activeOpacity={0.4}
+          underlayColor="#e7decc"
+        >
+          <Text style={styles.btnText}>Remove Program</Text>
+        </TouchableHighlight>
+      </View>
+    </View>
+  ));
+  const onUpdateProgram = (value, key, type) => {
+    setData((prevState) => ({
+      ...prevState,
+      ProgramsOffered: {
+        ...prevState.ProgramsOffered,
+        [key]: {
+          ...prevState.ProgramsOffered[key],
+          [type]: value,
+        },
+      },
+    }));
+  };
+
+  const addProgram = () => {
+    var randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    var uniqid = randLetter + Date.now();
+
+    let programs = data.ProgramsOffered;
+    programs[uniqid] = {
+      Field: "",
+      TuitionMax: "",
+      TuitionMin: "",
+      programs: "",
+    };
+
+    updateData(programs, "ProgramsOffered");
+  };
+
+  const removeProgram = (key) => {
+    let programs = data.ProgramsOffered
+    delete programs[key]; 
+
+    updateData(programs, "ProgramsOffered")
+
+  }
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -255,9 +342,7 @@ export default function University({ navigation }) {
               label={"Goals"}
               style={styles.formGroupInput}
               value={data.SchoolDetails.Goal}
-              onChangeText={(value) =>
-                updateSchoolDetails(value, "Goal")
-              }
+              onChangeText={(value) => updateSchoolDetails(value, "Goal")}
             />
           </View>
           <View style={styles.formGroup}>
@@ -266,24 +351,31 @@ export default function University({ navigation }) {
                 flexDirection: "row",
                 alignContent: "center",
                 alignItems: "center",
+                justifyContent: "space-between",
               }}
             >
               <Text style={styles.formGroupLabel}>Programs Offered</Text>
-              <IconButton
-                icon="minus"
-                color={Colors.red500}
-                size={30}
-                style={{ backgroundColor: "white", marginLeft: 50 }}
-                onPress={() => console.log("Pressed")}
-              />
-              <IconButton
-                icon="plus"
-                color={Colors.green500}
-                style={{ backgroundColor: "white" }}
-                size={30}
-                onPress={() => console.log("Pressed")}
-              />
+              <TouchableHighlight
+                style={styles.btn}
+                onPress={() => addProgram()}
+                //   onPress={() => console.log(data)}
+                activeOpacity={0.4}
+                underlayColor="#e7decc"
+              >
+                <Text style={styles.btnText}>Add Program</Text>
+              </TouchableHighlight>
             </View>
+            {programsList}
+          </View>
+          <View style={styles.btnSaveContainer}>
+            <TouchableHighlight
+              style={styles.btnSave}
+              activeOpacity={0.4}
+              underlayColor="#e7decc"
+              onPress={() => console.log(data)}
+            >
+              <Text style={styles.btnText}>SAVE</Text>
+            </TouchableHighlight>
           </View>
         </View>
       </ScrollView>
@@ -294,7 +386,7 @@ export default function University({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ddd",
+    backgroundColor: "#EFB679",
   },
   padding: {
     paddingHorizontal: 20,
@@ -325,6 +417,14 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: "center",
   },
+  btnSave: {
+    width: "100%",
+    backgroundColor: "#FF9829",
+    paddingVertical: 10,
+    borderRadius: 5,
+    padding: 10,
+    alignItems: "center",
+  },
   btnText: {
     fontSize: 18,
     color: "white",
@@ -337,5 +437,13 @@ const styles = StyleSheet.create({
     borderRadius: 99,
     padding: 0,
     marginTop: 30,
+  },
+  btnRemove: {
+    width: "50%",
+    backgroundColor: "red",
+    paddingVertical: 10,
+    borderRadius: 5,
+    padding: 10,
+    alignItems: "center",
   },
 });
