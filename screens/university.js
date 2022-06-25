@@ -25,7 +25,6 @@ import {
   uploadString,
   getDownloadURL,
 } from "firebase/storage";
-
 export default function University({ navigation }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("Public");
@@ -74,7 +73,6 @@ export default function University({ navigation }) {
 
   const pickLogo = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
-    console.log(result);
     if (result.type === "cancel") {
       return;
     }
@@ -93,7 +91,6 @@ export default function University({ navigation }) {
     uploadBytes(picRef, blob)
       .then((snapshot) => {
         getDownloadURL(picRef).then((downloadURL) => {
-          console.log(downloadURL);
           updateData(downloadURL, "logo");
         });
       })
@@ -157,7 +154,7 @@ export default function University({ navigation }) {
         onChangeText={(value) => onUpdateProgram(value, key, "programs")}
         // value={data.ProgramsOffered[key].programs}
       />
-      <View style={{marginBottom:20, alignItems:'center'}}>
+      <View style={{ marginBottom: 20, alignItems: "center" }}>
         <TouchableHighlight
           style={styles.btnRemove}
           onPress={() => removeProgram(key)}
@@ -199,12 +196,15 @@ export default function University({ navigation }) {
   };
 
   const removeProgram = (key) => {
-    let programs = data.ProgramsOffered
-    delete programs[key]; 
+    let programs = data.ProgramsOffered;
+    delete programs[key];
+    updateData(programs, "ProgramsOffered");
+  };
 
-    updateData(programs, "ProgramsOffered")
-
-  }
+  const save = () => {
+    let programs = data.ProgramsOffered.randomID1.programs;
+    console.log(programs.replace(/\n|\r|,/g, ","));
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -367,12 +367,39 @@ export default function University({ navigation }) {
             </View>
             {programsList}
           </View>
+          <View style={styles.formGroup}>
+            <Text style={styles.formGroupLabel}>University Performance</Text>
+            <TextInput label={"Rankings"} style={styles.formGroupInput} />
+            <TextInput
+              label={"Board Exam Performance"}
+              style={styles.formGroupInput}
+            />
+            <TextInput label={"Others"} style={styles.formGroupInput} />
+          </View>
+          <View style={styles.formGroup}>
+            <Text style={styles.formGroupLabel}>Addmission Requirments</Text>
+            <TextInput
+              label={"Freshmen"}
+              multiline
+              style={styles.formGroupInput}
+            />
+                        <TextInput
+              label={"Cross Enrolles"}
+              multiline
+              style={styles.formGroupInput}
+            />
+                        <TextInput
+              label={"Second Course Enrolles"}
+              multiline
+              style={styles.formGroupInput}
+            />
+          </View>
           <View style={styles.btnSaveContainer}>
             <TouchableHighlight
               style={styles.btnSave}
               activeOpacity={0.4}
               underlayColor="#e7decc"
-              onPress={() => console.log(data)}
+              onPress={() => save()}
             >
               <Text style={styles.btnText}>SAVE</Text>
             </TouchableHighlight>
