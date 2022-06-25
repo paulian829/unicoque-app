@@ -39,7 +39,7 @@ export default function Review({ route, navigation }) {
     onValue(UniRef, (snapshot) => {
       let value = snapshot.val();
       console.log(value);
-      setReviews(value);
+      setReviews({ ...value });
     });
   }, [isFocused]);
 
@@ -62,8 +62,8 @@ export default function Review({ route, navigation }) {
     update(ref(db), updates)
       .then(() => {
         console.log("updated");
-        setReviewStar(null)
-        setReviewText(0)
+        setReviewStar(null);
+        setReviewText(0);
       })
       .catch(() => {});
   };
@@ -72,9 +72,9 @@ export default function Review({ route, navigation }) {
     <Card style={{ marginBottom: 20 }} key={key}>
       <Card.Content>
         <Title>{reviews[key].comment}</Title>
-        <View style={{alignItems:'flex-start'}}>
+        <View style={{ alignItems: "flex-start" }}>
           <Stars
-          disabled={true}
+            disabled={true}
             default={parseInt(reviews[key].rating)}
             count={5}
             style={{ alignSelf: "left" }}
@@ -112,11 +112,9 @@ export default function Review({ route, navigation }) {
         />
         <View style={{ alignItems: "center" }}>
           <Stars
-
             default={reviewStar}
             count={5}
             update={(value) => setReviewStar(value)}
-            
             fullStar={
               <Icon name={"star"} size={40} style={[styles.myStarStyle]} />
             }

@@ -20,17 +20,20 @@ export default function ArticlesList({ route, navigation }) {
     const UniRef = ref(db, "university/" + key + "/articles");
     onValue(UniRef, (snapshot) => {
       let value = snapshot.val();
-      setArticles(value);
+      setArticles({ ...value });
     });
   }, [isFocused]);
-
 
   const clickArticle = (screen, articleKey) => {
     navigation.navigate(screen, { articlekey: articleKey, uniKey: key });
   };
 
   const articlesList = Object.keys(articles).map((key) => (
-    <Card style={styles.cards} key={key} onPress={() => clickArticle('Article',key)}>
+    <Card
+      style={styles.cards}
+      key={key}
+      onPress={() => clickArticle("Article", key)}
+    >
       <Card.Content>
         <Card.Cover
           source={

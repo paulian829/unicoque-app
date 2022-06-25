@@ -20,7 +20,7 @@ export default function App({ navigation }) {
   // States
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [activeLogin, setActiveLogin] = useState("student");
-  const [email, setEmail] = useState('test100@email.com');
+  const [email, setEmail] = useState('test-10@email.com');
   const [password, setPassword] = useState('test123');
   const [btnStatus, setBtnStatus] = useState(false);
   const [btnText, setBtnText] = useState("LOGIN");
