@@ -25,6 +25,8 @@ import Favorite from "./screens/favorites";
 import Match from "./screens/match";
 import CustomDrawer from "./components/customDrawer";
 import University from "./screens/university";
+import MyArticles from "./screens/myarticles";
+
 import { AppStateContext } from "./Context";
 
 export default function App() {
@@ -69,10 +71,10 @@ export default function App() {
   };
 
   const Dashboard = () => {
-    const {account} = useContext(AppStateContext);
-    const {type} = useContext(AppStateContext);
+    const { account } = useContext(AppStateContext);
+    const { type } = useContext(AppStateContext);
 
-    console.log(type)
+    console.log(type);
     return (
       <Drawer.Navigator
         initialRouteName="Welcome"
@@ -107,6 +109,15 @@ export default function App() {
           // options = {({navigation})=>headerLogo(navigation)}
         />
         <Drawer.Screen
+          name="My Articles"
+          component={MyArticlesGroup}
+          options={
+            type === "university"
+              ? ({ navigation }) => headerLogo(navigation)
+              : { drawerItemStyle: { height: 0 } }
+          }
+        />
+        <Drawer.Screen
           name="Search School"
           component={SchoolViewGroup}
           options={({ navigation }) => headerLogo(navigation)}
@@ -127,6 +138,40 @@ export default function App() {
           options={({ navigation }) => headerLogo(navigation)}
         />
       </Drawer.Navigator>
+    );
+  };
+
+  const MyArticlesGroup = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Articles list"
+          component={MyArticles}
+          options={{
+            drawerItemStyle: { height: 0 },
+            headerShown: false,
+            swipeEdgeWidth: 0,
+          }}
+        />
+        <Stack.Screen
+          name="ArticlesList"
+          component={ArticlesList}
+          options={{
+            drawerItemStyle: { height: 0 },
+            headerShown: false,
+            swipeEdgeWidth: 0,
+          }}
+        />
+        <Stack.Screen
+          name="Article"
+          component={Article}
+          options={{
+            drawerItemStyle: { height: 0 },
+            headerShown: false,
+            swipeEdgeWidth: 0,
+          }}
+        />
+      </Stack.Navigator>
     );
   };
 
@@ -286,7 +331,7 @@ export default function App() {
   };
 
   return (
-    <AppStateProvider >
+    <AppStateProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen

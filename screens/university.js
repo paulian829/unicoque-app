@@ -33,7 +33,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { AppStateContext } from "../Context";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 export default function University({ navigation }) {
   const {user, setUser} = useContext(AppStateContext);
@@ -42,6 +42,8 @@ export default function University({ navigation }) {
   const [value, setValue] = useState("Public");
   const [logo, setLogo] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
+  const isFocused = useIsFocused();
+
   const [data, setData] = useState({
     Name: "",
     Website: "",
@@ -95,7 +97,7 @@ export default function University({ navigation }) {
       const data = snapshot.val();
       setData({ ...data });
     });
-  }, []);
+  }, [isFocused]);
 
   const navigate = (screen) => {
     navigation.navigate(screen);
@@ -275,8 +277,17 @@ export default function University({ navigation }) {
   };
 
   const save = () => {
-    let programs = data.ProgramsOffered.randomID1.programs;
-    console.log(programs.replace(/\n|\r|,/g, ","));
+    console.log(data)
+    console.log(user.Uid)
+
+    const db = getDatabase();
+    const updates = {};
+    updates["/university/" + user.Uid] = data;
+    update(ref(db), updates).then(() => {
+        console.log("University Updated")
+    });
+
+
   };
   return (
     <SafeAreaView style={styles.container}>
