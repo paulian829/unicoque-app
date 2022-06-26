@@ -28,15 +28,16 @@ export default function MyArticles({ navigation }) {
   const isFocused = useIsFocused();
   const [articles, setArticles] = useState({});
 
-  const clickArticle = (screen, articleKey) => {
+  const clickArticle = (screen, articleKey,key) => {
     navigation.navigate(screen, {
+      key:key,
       articlekey: articleKey,
       uniKey: account.Uid,
     });
   };
 
   useEffect(() => {
-    console.log(account);
+    console.log('reload');
     const db = getDatabase();
     const dataRef = ref(db, "university/" + account.Uid + "/articles/");
     onValue(dataRef, (snapshot) => {
@@ -51,7 +52,7 @@ export default function MyArticles({ navigation }) {
     <Card
       style={styles.cards}
       key={key}
-      onPress={() => clickArticle("Article", key)}
+      onPress={() => clickArticle("Article", articles[key],key)}
     >
       <Card.Content>
         <Card.Cover
@@ -69,7 +70,7 @@ export default function MyArticles({ navigation }) {
   ));
   
   const addArticle =  () => {
-    
+    navigation.navigate('Create Articles');
   }
 
   return (
@@ -121,5 +122,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "white",
     fontWeight: "bold",
+  },
+  cards: {
+    marginVertical: 10,
   },
 });

@@ -28,6 +28,8 @@ import University from "./screens/university";
 import MyArticles from "./screens/myarticles";
 
 import { AppStateContext } from "./Context";
+import CreateArticles from "./screens/add-article";
+import EditArticle from "./screens/edit-article";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -154,8 +156,8 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name="ArticlesList"
-          component={ArticlesList}
+          name="Article"
+          component={EditArticle}
           options={{
             drawerItemStyle: { height: 0 },
             headerShown: false,
@@ -163,8 +165,8 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name="Article"
-          component={Article}
+          name="Create Articles"
+          component={CreateArticles}
           options={{
             drawerItemStyle: { height: 0 },
             headerShown: false,
