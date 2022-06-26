@@ -136,6 +136,7 @@ export default function Profile({ navigation }) {
     });
   }
 
+
   return (
     <KeyboardAwareScrollView style={styles.container}>
       <ScrollView>

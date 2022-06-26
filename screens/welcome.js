@@ -83,7 +83,7 @@ export default function Welcome({ navigation }) {
             source={require("../assets/bg-image-large.png")}
             style={styles.logo}
           />
-          <Text style={styles.heading1}>Welcome!{user.displayName}</Text>
+          <Text style={styles.heading1}>Welcome!</Text>
           <Text style={styles.heading2}>
             Find your perfect school to study for college!{" "}
           </Text>

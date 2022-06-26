@@ -17,7 +17,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput, IconButton, Colors } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as DocumentPicker from "expo-document-picker";
-import { getDatabase, ref, child, push, update } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  child,
+  push,
+  update,
+  onValue,
+} from "firebase/database";
 import {
   getStorage,
   ref as storageRef,
@@ -25,7 +32,12 @@ import {
   uploadString,
   getDownloadURL,
 } from "firebase/storage";
+import { AppStateContext } from "../Context";
+import { useNavigation } from "@react-navigation/native";
+
 export default function University({ navigation }) {
+  const [user, setUser] = useContext(AppStateContext);
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("Public");
   const [logo, setLogo] = useState(null);
@@ -36,6 +48,8 @@ export default function University({ navigation }) {
     Email: "",
     contact: "",
     schoolType: "Public",
+    preview:
+      "https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fyarn-error-removebg-preview.1aea60d3.png?alt=media&token=c1f19939-8281-4639-8b40-1bffe0dca716",
     logo: "https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fyarn-error-removebg-preview.1aea60d3.png?alt=media&token=c1f19939-8281-4639-8b40-1bffe0dca716",
     SchoolDetails: {
       AboutSchool: "",
@@ -61,7 +75,39 @@ export default function University({ navigation }) {
         programs: "",
       },
     },
+    SchoolPerformance: {
+      Ranking: "",
+      Others: "",
+      BoardPerformance: "",
+    },
+    Requirements: {
+      Freshmen: "",
+      CrossEnrolles: "",
+      SecondCourse: "",
+    },
   });
+  const nav = useNavigation();
+  useEffect(() => {
+    nav.setOptions({
+      drawerItemStyle: { display: "none" },
+    });
+  }),[];
+
+  useEffect(() => {
+    // Get account information on Firebase
+    console.log(user.Uid);
+
+    const db = getDatabase();
+    const dataRef = ref(db, "university/" + user.Uid);
+    onValue(dataRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log(snapshot);
+      console.log(data);
+      if (data) {
+        setData({ ...data });
+      }
+    });
+  }, []);
 
   const navigate = (screen) => {
     navigation.navigate(screen);
@@ -97,6 +143,32 @@ export default function University({ navigation }) {
       .catch(() => console.log("Error"));
   };
 
+  const pickPreview = async () => {
+    let result = await DocumentPicker.getDocumentAsync({});
+    if (result.type === "cancel") {
+      return;
+    }
+    // setLogo(result.uri);
+
+    var randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    var uniqid = randLetter + Date.now();
+
+    const response = await fetch(result.uri);
+    const blob = await response.blob();
+    setLogoFile(blob);
+
+    const storage = getStorage();
+    const picRef = storageRef(storage, "/logo/" + uniqid + ".jpeg");
+
+    uploadBytes(picRef, blob)
+      .then((snapshot) => {
+        getDownloadURL(picRef).then((downloadURL) => {
+          updateData(downloadURL, "preview");
+        });
+      })
+      .catch(() => console.log("Error"));
+  };
+
   const updateData = (value, type) => {
     setData((prevState) => ({
       ...prevState,
@@ -116,6 +188,19 @@ export default function University({ navigation }) {
     setData((prevState) => ({
       ...prevState,
       SchoolDetails: { ...prevState.SchoolDetails, [type]: value },
+    }));
+  };
+  const updateSchoolPerformance = (value, type) => {
+    setData((prevState) => ({
+      ...prevState,
+      SchoolPerformance: { ...prevState.SchoolPerformance, [type]: value },
+    }));
+  };
+
+  const updateAdmissionRequirements = (value, type) => {
+    setData((prevState) => ({
+      ...prevState,
+      Requirements: { ...prevState.Requirements, [type]: value },
     }));
   };
 
@@ -253,6 +338,19 @@ export default function University({ navigation }) {
               theme="LIGHT"
               style={{ marginBottom: 20 }}
             />
+            <Text style={styles.formGroupLabel}>University Preview Image</Text>
+            <View style={{ alignItems: "center" }}>
+              <TouchableHighlight
+                style={styles.btn}
+                onPress={() => pickPreview()}
+                //   onPress={() => console.log(data)}
+                activeOpacity={0.4}
+                underlayColor="#e7decc"
+              >
+                <Text style={styles.btnText}>Select Preview</Text>
+              </TouchableHighlight>
+              <Image source={{ uri: data.preview }} style={styles.logo} />
+            </View>
             <Text style={styles.formGroupLabel}>University Logo</Text>
             <View style={{ alignItems: "center" }}>
               <TouchableHighlight
@@ -369,29 +467,68 @@ export default function University({ navigation }) {
           </View>
           <View style={styles.formGroup}>
             <Text style={styles.formGroupLabel}>University Performance</Text>
-            <TextInput label={"Rankings"} style={styles.formGroupInput} />
+            <TextInput
+              label={"Rankings"}
+              style={styles.formGroupInput}
+              value={data.SchoolPerformance.Ranking}
+              onChangeText={(value) =>
+                updateSchoolPerformance(value, "Ranking")
+              }
+            />
             <TextInput
               label={"Board Exam Performance"}
               style={styles.formGroupInput}
+              value={data.SchoolPerformance.BoardPerformance}
+              onChangeText={(value) =>
+                updateSchoolPerformance(value, "BoardPerformance")
+              }
             />
-            <TextInput label={"Others"} style={styles.formGroupInput} />
+            <TextInput
+              label={"Others"}
+              style={styles.formGroupInput}
+              value={data.SchoolPerformance.Others}
+              onChangeText={(value) => updateSchoolPerformance(value, "Others")}
+            />
           </View>
           <View style={styles.formGroup}>
-            <Text style={styles.formGroupLabel}>Addmission Requirments</Text>
+            <Text style={styles.formGroupLabel}>Admission Requirments</Text>
             <TextInput
               label={"Freshmen"}
               multiline
               style={styles.formGroupInput}
+              value={data.Requirements.Freshmen}
+              onChangeText={(value) =>
+                updateAdmissionRequirements(value, "Freshmen")
+              }
             />
-                        <TextInput
+            <TextInput
               label={"Cross Enrolles"}
               multiline
               style={styles.formGroupInput}
+              value={data.Requirements.CrossEnrolles}
+              onChangeText={(value) =>
+                updateAdmissionRequirements(value, "CrossEnrolles")
+              }
             />
-                        <TextInput
+            <TextInput
               label={"Second Course Enrolles"}
               multiline
               style={styles.formGroupInput}
+              value={data.Requirements.SecondCourse}
+              onChangeText={(value) =>
+                updateAdmissionRequirements(value, "SecondCourse")
+              }
+            />
+          </View>
+          <View style={styles.formGroup}>
+            <Text style={styles.formGroupLabel}>Scholarship</Text>
+
+            <TextInput
+              label={"List of Scholarship offered"}
+              multiline
+              style={styles.formGroupInput}
+              value={data.Scholarship}
+              onChangeText={(value) => updateData(value, "Scholarship")}
             />
           </View>
           <View style={styles.btnSaveContainer}>
@@ -458,13 +595,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 300,
+    height: 300,
     alignSelf: "center",
-    borderRadius: 99,
     padding: 0,
     marginTop: 30,
   },
+
   btnRemove: {
     width: "50%",
     backgroundColor: "red",

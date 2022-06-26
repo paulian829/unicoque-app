@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import Home from "./screens/intro";
 import Login from "./screens/login";
 import Terms from "./screens/terms";
@@ -16,7 +17,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Image, Button, View, TouchableHighlight } from "react-native";
-import AppStateProvider from "./Context";
+import  AppStateProvider from "./Context";
 import Review from "./screens/review";
 import ArticlesList from "./screens/articles-list";
 import Article from "./screens/article";
@@ -28,6 +29,7 @@ import University from "./screens/university";
 export default function App() {
   const Stack = createNativeStackNavigator();
   const Drawer = createDrawerNavigator();
+
 
   const headerLogo = (navigation) => {
     let options = {
@@ -90,14 +92,11 @@ export default function App() {
           component={Profile}
           options={({ navigation }) => headerLogo(navigation)}
         />
-        <Drawer.Screen 
+        <Drawer.Screen
           name="University"
           component={University}
           options={({ navigation }) => headerLogo(navigation)}
-
         />
-
-
         <Drawer.Screen
           name="Search School"
           component={SchoolViewGroup}
@@ -113,7 +112,6 @@ export default function App() {
           component={MatchViewGroup}
           options={({ navigation }) => headerLogo(navigation)}
         />
-
       </Drawer.Navigator>
     );
   };
