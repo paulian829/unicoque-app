@@ -16,7 +16,7 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 
 const CustomDrawer = (props) => {
-  const [account, setAccount] = useContext(AppStateContext);
+  const {account} = useContext(AppStateContext);
   const nav = useNavigation();
 
 

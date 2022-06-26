@@ -36,7 +36,7 @@ import { AppStateContext } from "../Context";
 import { useNavigation } from "@react-navigation/native";
 
 export default function University({ navigation }) {
-  const [user, setUser] = useContext(AppStateContext);
+  const {user, setUser} = useContext(AppStateContext);
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("Public");
@@ -86,26 +86,14 @@ export default function University({ navigation }) {
       SecondCourse: "",
     },
   });
-  const nav = useNavigation();
-  useEffect(() => {
-    nav.setOptions({
-      drawerItemStyle: { display: "none" },
-    });
-  }),[];
 
   useEffect(() => {
     // Get account information on Firebase
-    console.log(user.Uid);
-
     const db = getDatabase();
     const dataRef = ref(db, "university/" + user.Uid);
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
-      console.log(snapshot);
-      console.log(data);
-      if (data) {
-        setData({ ...data });
-      }
+      setData({ ...data });
     });
   }, []);
 

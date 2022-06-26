@@ -17,7 +17,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Image, Button, View, TouchableHighlight } from "react-native";
-import  AppStateProvider from "./Context";
+import AppStateProvider from "./Context";
 import Review from "./screens/review";
 import ArticlesList from "./screens/articles-list";
 import Article from "./screens/article";
@@ -25,11 +25,11 @@ import Favorite from "./screens/favorites";
 import Match from "./screens/match";
 import CustomDrawer from "./components/customDrawer";
 import University from "./screens/university";
+import { AppStateContext } from "./Context";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
   const Drawer = createDrawerNavigator();
-
 
   const headerLogo = (navigation) => {
     let options = {
@@ -69,6 +69,10 @@ export default function App() {
   };
 
   const Dashboard = () => {
+    const {account} = useContext(AppStateContext);
+    const {type} = useContext(AppStateContext);
+
+    console.log(type)
     return (
       <Drawer.Navigator
         initialRouteName="Welcome"
@@ -95,7 +99,12 @@ export default function App() {
         <Drawer.Screen
           name="University"
           component={University}
-          options={({ navigation }) => headerLogo(navigation)}
+          options={
+            type === "university"
+              ? ({ navigation }) => headerLogo(navigation)
+              : { drawerItemStyle: { height: 0 } }
+          }
+          // options = {({navigation})=>headerLogo(navigation)}
         />
         <Drawer.Screen
           name="Search School"
@@ -272,7 +281,7 @@ export default function App() {
   };
 
   return (
-    <AppStateProvider>
+    <AppStateProvider >
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen

@@ -29,7 +29,7 @@ export default function Welcome({ navigation }) {
   const [originalData, setOriginalData] = useState([]);
   const isFocused = useIsFocused();
   const [liked, setLiked] = useState(false);
-  const [account] = useContext(AppStateContext);
+  const {account} = useContext(AppStateContext);
   const [favorite, setFavorite] = useState({});
 
   useEffect(() => {

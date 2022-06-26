@@ -26,7 +26,7 @@ export default function Profile({ navigation }) {
   const [profilePic, setProfilePic] = useState(null);
   const [file, setFile] = useState(null);
 
-  const [account, setAccount] = useContext(AppStateContext);
+  const {account, setAccount} = useContext(AppStateContext);
   const [loading, setLoading] = useState(false);
   const [loadingBtn, setLoadingBtn] = useState("SAVE PROFILE");
 
@@ -71,6 +71,7 @@ export default function Profile({ navigation }) {
   });
 
   useEffect(() => {
+    console.log(account)
     setData(account);
     setProfilePic(account.profilePic)
     setLoading(false);

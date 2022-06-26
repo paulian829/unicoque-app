@@ -2,18 +2,25 @@ import { createContext, useEffect, useState, useRef } from "react";
 export const AppStateContext = createContext();
 
 const AppStateProvider = (props) => {
-  const [user, setUser] = useState(null);
-  const [uid, setUid] = useState(null);
+  const [user, setUser] = useState({});
+  const [uid, setUid] = useState({});
 
-  const [type, setType] = useState(null);
-  const [account, setAccount] = useState(null);
-  const [university, setUniversity] = useState(null);
+  const [type, setType] = useState("student");
+  const [account, setAccount] = useState({});
+  const [university, setUniversity] = useState({});
 
   const isFirstRender = useRef(true);
 
+  useEffect(() => {
+    console.log(account)
+    setType(account.type)
+    console.log("useEffect called");
+
+  }, [account])
+
   return (
     <AppStateContext.Provider
-      value={[
+      value={{
         user,
         setUser,
         uid,
@@ -24,7 +31,7 @@ const AppStateProvider = (props) => {
         setType,
         setAccount,
         setUniversity,
-      ]}
+      }}
     >
       {props.children}
     </AppStateContext.Provider>

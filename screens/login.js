@@ -26,8 +26,8 @@ export default function App({ navigation }) {
   const [btnText, setBtnText] = useState("LOGIN");
 
   // Context 
-  const [user, setUser] = useContext(AppStateContext);
-  const [uid, setUid] = useContext(AppStateContext);
+  const {user, setUser} = useContext(AppStateContext);
+  const {uid, setUid} = useContext(AppStateContext);
 
 
   const navigate = (screen) => {

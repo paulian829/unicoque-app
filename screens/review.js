@@ -26,7 +26,7 @@ export default function Review({ route, navigation }) {
   const [reviewStar, setReviewStar] = useState(0);
   const [reviewText, setReviewText] = useState(null);
   const [reviews, setReviews] = useState({});
-  const [account, setAccount] = useContext(AppStateContext);
+  const {account} = useContext(AppStateContext);
 
   const navigate = (screen) => {
     navigation.navigate(screen);

@@ -10,64 +10,85 @@ import {
   ScrollView,
   TouchableHighlight,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import { AppStateContext } from "../Context";
 import { getDatabase, ref, onValue } from "firebase/database";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 
 export default function Welcome({ navigation }) {
-  const [user, setUser] = useContext(AppStateContext);
-  const [account, setAccount] = useContext(AppStateContext);
-  const [university, setUniversity] = useContext(AppStateContext);
+  const { user, setUser } = useContext(AppStateContext);
+  const { account, setAccount } = useContext(AppStateContext);
+  const { university, setUniversity } = useContext(AppStateContext);
+  const { type, setType } = useContext(AppStateContext);
+  const [userID, setUserID] = useState(user.Uid)
 
-  const nav = useNavigation();
-  useEffect(() => {
-    nav.setOptions({
-      headerRight: () => (
-        <View style={{ flexDirection: "row" }}>
-          <IconButton
-            icon="magnify"
-            color={Colors.red500}
-            size={30}
-            onPress={() =>
-              navigation.navigate("Search School", { screen: "Search" })
-            }
-          />
-          <IconButton
-            icon="account"
-            color={Colors.red500}
-            size={30}
-            onPress={() =>
-              navigation.navigate("Profile")
-            }
-          />
-        </View>
-      ),
-    });
-  });
+  const isFocused = useIsFocused();
+
+  // const nav = useNavigation();
+  // useEffect(() => {
+  //   nav.setOptions({
+  //     headerRight: () => (F
+  //       <View style={{ flexDirection: "row" }}>
+  //         <IconButton
+  //           icon="magnify"
+  //           color={Colors.red500}
+  //           size={30}
+  //           onPress={() =>
+  //             navigation.navigate("Search School", { screen: "Search" })
+  //           }
+  //         />
+  //         <IconButton
+  //           icon="account"
+  //           color={Colors.red500}
+  //           size={30}
+  //           onPress={() =>
+  //             navigation.navigate("Profile")
+  //           }
+  //         />
+  //       </View>
+  //     ),
+  //   });
+  // });
 
   useEffect(() => {
     // Get account information on Firebase
-    console.log(user.uid);
 
-    const db = getDatabase();
-    const dataRef = ref(db, "Account/" + user.uid);
-    onValue(dataRef, (snapshot) => {
-      const data = snapshot.val();
-      console.log(data);
-      setAccount(data);
-      if (data.type == "university") {
-        downloadUniData();
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+        console.log(userID)
+        const db = getDatabase();
+        const dataRef = ref(db, "Account/" + uid);
+        onValue(dataRef, (snapshot) => {
+          const data = snapshot.val();
+          setAccount({ ...data });
+          setUser({ ...data });
+          // if (data.type == "university") {
+          downloadUniData();
+          // }
+        });
+        // ...
+      } else {
+        // User is signed out
+        // ...
       }
     });
+
+
+
     // Get
-  }, []);
+  }, [isFocused]);
 
   const downloadUniData = () => (event) => {
     const db = getDatabase();
     const UniRef = ref(db, "University/" + user.uid);
     onValue(UniRef, (snapshot) => {
       const data = snapshot.val();
-      setUniversity(data);
+      setUniversity({ ...data });
     });
   };
 
