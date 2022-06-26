@@ -114,7 +114,12 @@ export default function App() {
         <Drawer.Screen
           name="Favorites"
           component={FavoriteViewGroup}
-          options={({ navigation }) => headerLogo(navigation)}
+          // options={({ navigation }) => headerLogo(navigation)}
+          options={
+            type === "student"
+              ? ({ navigation }) => headerLogo(navigation)
+              : { drawerItemStyle: { height: 0 } }
+          }
         />
         <Drawer.Screen
           name="Match"
