@@ -212,7 +212,7 @@ export default function Match({ navigation }) {
     let range = maxRange
 
     if (range == 0) {
-      setMaxRange(999999999);
+      range = "999999999"
     }
     for (let item in originalData) {
       let uid = originalData[item].Uid;
