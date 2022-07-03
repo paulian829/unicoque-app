@@ -16,7 +16,6 @@ import {
   TouchableHighlight,
   Pressable,
   ToastAndroid,
-  TextInput,
 } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -26,7 +25,14 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
 
-import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
+import {
+  Avatar,
+  Button,
+  Card,
+  Title,
+  Paragraph,
+  TextInput,
+} from "react-native-paper";
 import { getDatabase, ref, onValue, update } from "firebase/database";
 import { AppStateContext } from "../Context";
 
@@ -36,7 +42,7 @@ export default function Match({ navigation }) {
   const [originalData, setOriginalData] = useState([]);
   const isFocused = useIsFocused();
   const [liked, setLiked] = useState(false);
-  const {account} = useContext(AppStateContext);
+  const { account } = useContext(AppStateContext);
   const [favorite, setFavorite] = useState({});
   const scrollViewRef = useRef();
 
@@ -49,7 +55,7 @@ export default function Match({ navigation }) {
 
   const [location, setLoacation] = useState("");
   const [program, setProgram] = useState("");
-  const [maxRange, setMaxRange] = useState(0);
+  const [maxRange, setMaxRange] = useState("0");
 
   useEffect(() => {
     const db = getDatabase();
@@ -60,7 +66,7 @@ export default function Match({ navigation }) {
       for (let key in allSchools) {
         arr.push(allSchools[key]);
       }
-      setOriginalData({...arr});
+      setOriginalData({ ...arr });
 
       // setSchoolData([...arr]);
     });
@@ -91,7 +97,6 @@ export default function Match({ navigation }) {
   const clickSchool = (screen, key) => {
     navigation.navigate(screen, { key: key });
     // navigation.navigate('Search School', { screen: 'SchoolView', key: key });
-
   };
 
   const getScore = (reviews) => {
@@ -205,8 +210,8 @@ export default function Match({ navigation }) {
     let resultObj = {};
     let allAddress = "";
 
-    if (maxRange == 0 ){
-      setMaxRange(999999999)
+    if (maxRange == 0) {
+      setMaxRange(999999999);
     }
     for (let item in originalData) {
       let uid = originalData[item].Uid;
@@ -243,7 +248,6 @@ export default function Match({ navigation }) {
       <ScrollView ref={scrollViewRef}>
         <View style={styles.padding}>
           <Text style={styles.heading}>Find University Match</Text>
-          <Text style={styles.headingOne}>School Type</Text>
           <DropDownPicker
             open={open}
             value={value}
@@ -255,24 +259,24 @@ export default function Match({ navigation }) {
             setValue={setValue}
             setItems={setItems}
             theme="LIGHT"
-            style={{ height: 60, fontSize: 18 }}
+            style={{ height: 60, fontSize: 18, marginBottom: 15 }}
           />
-          <Text style={styles.headingOne}>Location</Text>
           <TextInput
+            label={"Location"}
             style={styles.input}
             onChangeText={(location) => setLoacation(location)}
             value={location}
           />
 
-          <Text style={styles.headingOne}>Programs</Text>
           <TextInput
+            label={"Programs"}
             style={styles.input}
             onChangeText={(program) => setProgram(program)}
             value={program}
           />
 
-          <Text style={styles.headingOne}>Maximum Tuition Fee (PHP)</Text>
           <TextInput
+            label={"Maximum Tuition Fee (PHP)"}
             style={styles.input}
             fontSize={30}
             onChangeText={(maxRange) =>
@@ -342,11 +346,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   input: {
-    height: 60,
+    // height: 60,
     borderWidth: 1,
-    padding: 10,
-    borderRadius: 4,
+    // padding: 10,
+    // borderRadius: 4,
     backgroundColor: "white",
-    fontSize: 16,
+    // fontSize: 16,
+    marginBottom: 15,
   },
 });
