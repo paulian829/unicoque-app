@@ -55,7 +55,7 @@ export default function Match({ navigation }) {
 
   const [location, setLoacation] = useState("");
   const [program, setProgram] = useState("");
-  const [maxRange, setMaxRange] = useState("0");
+  const [maxRange, setMaxRange] = useState("");
 
   useEffect(() => {
     const db = getDatabase();
@@ -209,8 +209,9 @@ export default function Match({ navigation }) {
   const findMatch = () => {
     let resultObj = {};
     let allAddress = "";
+    let range = maxRange
 
-    if (maxRange == 0) {
+    if (range == 0) {
       setMaxRange(999999999);
     }
     for (let item in originalData) {
@@ -233,7 +234,7 @@ export default function Match({ navigation }) {
       if (
         allAddress.toLocaleLowerCase().includes(location.toLowerCase()) &&
         originalData[item].schoolType === value &&
-        highest <= maxRange &&
+        highest <= range &&
         program_str.includes(program)
       ) {
         resultObj[uid] = originalData[item];
