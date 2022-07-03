@@ -246,9 +246,19 @@ export default function Match({ navigation }) {
         resultObj[uid] = originalData[item];
       }
       scrollViewRef.current.scrollToEnd({ animated: true });
-
-      setSchoolData({ ...resultObj });
+      var length = Object.keys(resultObj).length;
     }
+    if (length <= 0) {
+      console.log("no results found");
+      ToastAndroid.showWithGravityAndOffset(
+        "No match were found!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    }
+    setSchoolData({ ...resultObj });
   };
   return (
     <SafeAreaView style={styles.container}>
