@@ -6,7 +6,6 @@ import React, {
   useCallback,
 } from "react";
 import { IconButton, Colors } from "react-native-paper";
-
 import {
   StyleSheet,
   Text,
