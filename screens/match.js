@@ -122,6 +122,10 @@ export default function Match({ navigation }) {
     }
   };
 
+  const isNumeric = (n) => {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  };
+
   const updateFavorite = (uid) => {
     let favoriteObj = favorite;
     let status = favorite[uid];
@@ -209,28 +213,30 @@ export default function Match({ navigation }) {
   const findMatch = () => {
     let resultObj = {};
     let allAddress = "";
-    let range = maxRange
+    let range = maxRange;
 
     if (range == 0) {
-      range = "999999999"
+      range = "999999999";
     }
     for (let item in originalData) {
       let uid = originalData[item].Uid;
       allAddress = JSON.stringify(originalData[item].Address);
-
       let programsList = [];
       let highest = 0;
       let programsOffered = originalData[item].ProgramsOffered;
       for (let programx in programsOffered) {
         programsList.push(programsOffered[programx].Field);
         let TuitionMax = programsOffered[programx].TuitionMax;
+        if (!TuitionMax || !isNumeric(TuitionMax)) TuitionMax = "0";
         TuitionMax
           ? (TuitionMax = TuitionMax.replace(/[^a-zA-Z0-9 ]/g, ""))
           : (TuitionMax = "0");
         TuitionMax = parseInt(TuitionMax);
         TuitionMax > highest ? (highest = TuitionMax) : highest;
+        console.log(TuitionMax);
       }
       let program_str = programsList.toString().toLowerCase();
+
       if (
         allAddress.toLocaleLowerCase().includes(location.toLowerCase()) &&
         originalData[item].schoolType === value &&
