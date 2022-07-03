@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { IconButton, Colors } from "react-native-paper";
+import { IconButton, Colors, TextInput } from "react-native-paper";
 import { getDatabase, ref, child, push, update } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, uploadString, getDownloadURL } from "firebase/storage";
 
@@ -9,7 +9,7 @@ import {
   Text,
   View,
   Image,
-  TextInput,
+  // TextInput,
   ScrollView,
   Button,
   TouchableHighlight,
@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 // import { DocumentPicker, ImagePicker } from 'expo';
+
 import * as DocumentPicker from "expo-document-picker";
 import { AppStateContext } from "../Context";
 
@@ -158,30 +159,30 @@ export default function Profile({ navigation }) {
           </View>
         </View>
         <View style={{ paddingHorizontal: 20 }}>
-          <Text style={styles.label}>Email</Text>
           <TextInput
+            label={'Email'}
             value={data.email}
-            style={styles.input}
+            style={styles.inputDisabled}
             onChangeText={(email) => updateData(email, "email")}
             onSubmitEditing={Keyboard.dismiss}
             editable={false}
           />
-          <Text style={styles.label}>firstname</Text>
           <TextInput
+          label={'Firstname'}
             value={data.firstName}
             style={styles.input}
             onChangeText={(firstName) => updateData(firstName, "firstName")}
             onSubmitEditing={Keyboard.dismiss}
           />
-          <Text style={styles.label}>lastname</Text>
           <TextInput
+          label={'Lastname'}
             value={data.lastName}
             style={styles.input}
             onChangeText={(lastName) => updateData(lastName, "lastName")}
             onSubmitEditing={Keyboard.dismiss}
           />
-          <Text style={styles.label}>Contact number</Text>
           <TextInput
+          label={"Contact Number"}
             value={data.contactNumber}
             style={styles.input}
             onChangeText={(contactNumber) =>
@@ -189,17 +190,17 @@ export default function Profile({ navigation }) {
             }
             onSubmitEditing={Keyboard.dismiss}
           />
-          <Text style={styles.label}>Account type</Text>
           <TextInput
+          label={'Account Type'}
             value={data.type}
-            style={styles.input}
+            style={styles.inputDisabled}
             onSubmitEditing={Keyboard.dismiss}
             editable={false}
           />
-          <Text style={styles.label}>Date Created</Text>
           <TextInput
+          label={'Date Created'}
             value={textSlice(account.dateCreated)}
-            style={styles.input}
+            style={styles.inputDisabled}
             onSubmitEditing={Keyboard.dismiss}
             editable={false}
           />
@@ -241,12 +242,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F5F5",
   },
   input: {
-    height: 50,
-    padding: 10,
-    borderRadius: 4,
-    fontSize: 20,
+    // height: 50,
+    // padding: 10,
+    // borderRadius: 4,
+    // fontSize: 20,
     backgroundColor: "#fff",
-    marginBottom: 20,
+    marginBottom: 10
+  },
+  inputDisabled: {
+    // height: 50,
+    // padding: 10,
+    // borderRadius: 4,
+    // fontSize: 20,
+    marginBottom: 10
   },
   label: {
     fontSize: 16,
