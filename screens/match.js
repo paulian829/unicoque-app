@@ -225,7 +225,7 @@ export default function Match({ navigation }) {
       let highest = 0;
       let programsOffered = originalData[item].ProgramsOffered;
       for (let programx in programsOffered) {
-        programsList.push(programsOffered[programx].Field);
+        programsList.push(programsOffered[programx].programs);
         let TuitionMax = programsOffered[programx].TuitionMax;
         if (!TuitionMax || !isNumeric(TuitionMax)) TuitionMax = "0";
         TuitionMax
@@ -236,12 +236,12 @@ export default function Match({ navigation }) {
         console.log(TuitionMax);
       }
       let program_str = programsList.toString().toLowerCase();
-
+      console.log(program_str)
       if (
         allAddress.toLocaleLowerCase().includes(location.toLowerCase()) &&
         originalData[item].schoolType === value &&
         highest <= range &&
-        program_str.includes(program)
+        program_str.toLowerCase().includes(program.toLowerCase())
       ) {
         resultObj[uid] = originalData[item];
       }
