@@ -103,14 +103,18 @@ export default function Review({ route, navigation }) {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <Text style={styles.heading}>Reviews</Text>
-        <TextInput
+       { 
+       account.type === 'Student' &&
+       <TextInput
           multiline={true}
           numberOfLines={4}
           style={styles.input}
           value={reviewText}
           onChangeText={(reviewText) => setReviewText(reviewText)}
-        />
-        <View style={{ alignItems: "center" }}>
+        />}
+        {
+          account.type === 'Student' &&
+          <View style={{ alignItems: "center" }}>
           <Stars
             default={reviewStar}
             count={5}
@@ -137,7 +141,7 @@ export default function Review({ route, navigation }) {
           >
             <Text style={styles.btnText}>POST REVIEW</Text>
           </TouchableHighlight>
-        </View>
+        </View>}
         <View>{tifOptions}</View>
       </ScrollView>
     </SafeAreaView>

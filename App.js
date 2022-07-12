@@ -101,7 +101,12 @@ export default function App() {
           options={({ navigation }) => headerLogo(navigation)}
         />
         <Drawer.Screen
-          name="University"
+          name="Search Schools"
+          component={SchoolViewGroup}
+          options={({ navigation }) => headerLogo(navigation)}
+        />
+        <Drawer.Screen
+          name="My School Details"
           component={University}
           options={
             type === "university"
@@ -109,20 +114,6 @@ export default function App() {
               : { drawerItemStyle: { height: 0 } }
           }
           // options = {({navigation})=>headerLogo(navigation)}
-        />
-        <Drawer.Screen
-          name="My Articles"
-          component={MyArticlesGroup}
-          options={
-            type === "university"
-              ? ({ navigation }) => headerLogo(navigation)
-              : { drawerItemStyle: { height: 0 } }
-          }
-        />
-        <Drawer.Screen
-          name="Search School"
-          component={SchoolViewGroup}
-          options={({ navigation }) => headerLogo(navigation)}
         />
         <Drawer.Screen
           name="Favorites"
@@ -135,7 +126,17 @@ export default function App() {
           }
         />
         <Drawer.Screen
-          name="Match"
+          name="My Articles"
+          component={MyArticlesGroup}
+          options={
+            type === "university"
+              ? ({ navigation }) => headerLogo(navigation)
+              : { drawerItemStyle: { height: 0 } }
+          }
+        />
+
+        <Drawer.Screen
+          name="Match Schools"
           component={MatchViewGroup}
           options={({ navigation }) => headerLogo(navigation)}
         />

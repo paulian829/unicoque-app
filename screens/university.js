@@ -11,6 +11,7 @@ import {
   View,
   Image,
   TouchableHighlight,
+  Alert,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -36,7 +37,7 @@ import { AppStateContext } from "../Context";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 export default function University({ navigation }) {
-  const {user, setUser} = useContext(AppStateContext);
+  const { user, setUser } = useContext(AppStateContext);
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("Public");
@@ -277,17 +278,13 @@ export default function University({ navigation }) {
   };
 
   const save = () => {
-    console.log(data)
-    console.log(user.Uid)
-
     const db = getDatabase();
     const updates = {};
     updates["/university/" + user.Uid] = data;
     update(ref(db), updates).then(() => {
-        console.log("University Updated")
+      console.log("University Updated");
+      Alert.alert("Update", "University Details Updated!");
     });
-
-
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -342,7 +339,6 @@ export default function University({ navigation }) {
               <TouchableHighlight
                 style={styles.btn}
                 onPress={() => pickPreview()}
-                //   onPress={() => console.log(data)}
                 activeOpacity={0.4}
                 underlayColor="#e7decc"
               >
@@ -355,7 +351,6 @@ export default function University({ navigation }) {
               <TouchableHighlight
                 style={styles.btn}
                 onPress={() => pickLogo()}
-                //   onPress={() => console.log(data)}
                 activeOpacity={0.4}
                 underlayColor="#e7decc"
               >
@@ -407,7 +402,7 @@ export default function University({ navigation }) {
           </View>
           <View style={styles.formGroup}>
             <Text style={styles.formGroupLabel}>
-              University Mission and Vission
+              University Mission and Vision
             </Text>
             <TextInput
               label={"School Qoute"}
@@ -430,7 +425,7 @@ export default function University({ navigation }) {
               onChangeText={(value) => updateSchoolDetails(value, "Mission")}
             />
             <TextInput
-              label={"Vission"}
+              label={"Vision"}
               style={styles.formGroupInput}
               value={data.SchoolDetails.Vission}
               onChangeText={(value) => updateSchoolDetails(value, "Vission")}
@@ -452,17 +447,18 @@ export default function University({ navigation }) {
               }}
             >
               <Text style={styles.formGroupLabel}>Programs Offered</Text>
+            </View>
+            {programsList}
+            <View style={{alignItems:'center'}}>
               <TouchableHighlight
                 style={styles.btn}
                 onPress={() => addProgram()}
-                //   onPress={() => console.log(data)}
                 activeOpacity={0.4}
                 underlayColor="#e7decc"
               >
                 <Text style={styles.btnText}>Add Program</Text>
               </TouchableHighlight>
             </View>
-            {programsList}
           </View>
           <View style={styles.formGroup}>
             <Text style={styles.formGroupLabel}>University Performance</Text>

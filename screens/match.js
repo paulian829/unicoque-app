@@ -46,6 +46,7 @@ export default function Match({ navigation }) {
   const [favorite, setFavorite] = useState({});
   const scrollViewRef = useRef();
 
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("Public");
   const [items, setItems] = useState([
@@ -176,25 +177,8 @@ export default function Match({ navigation }) {
             alignItems: "center",
           }}
         >
-          <Stars
-            disabled={true}
-            default={getScore(schoolData[key].reviews)}
-            count={5}
-            fullStar={
-              <Icon name={"star"} size={40} style={[styles.myStarStyle]} />
-            }
-            emptyStar={
-              <Icon
-                name={"star-outline"}
-                size={40}
-                style={styles.myStarStyle}
-              />
-            }
-            halfStar={
-              <Icon name={"star-half"} size={40} style={[styles.myStarStyle]} />
-            }
-          />
-          <Pressable onPress={() => updateFavorite(schoolData[key].Uid)}>
+        {  account.type === 'Student' && 
+        <Pressable onPress={() => updateFavorite(schoolData[key].Uid)}>
             <MaterialCommunityIcons
               name={
                 checkIfFavorite(schoolData[key].Uid) ? "heart" : "heart-outline"
@@ -202,10 +186,10 @@ export default function Match({ navigation }) {
               size={32}
               color={checkIfFavorite(schoolData[key].Uid) ? "red" : "black"}
             />
-          </Pressable>
+          </Pressable>}
         </View>
-
         <Paragraph>{schoolData[key].Address.City}</Paragraph>
+        <Paragraph>{schoolData[key].schoolType}</Paragraph>
       </Card.Content>
     </Card>
   ));

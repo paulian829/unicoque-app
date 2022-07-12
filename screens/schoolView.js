@@ -175,7 +175,7 @@ export default function Welcome({ route, navigation }) {
             </Text>
           </View>
           <View style={styles.section}>
-            <Text style={styles.label}>Vission</Text>
+            <Text style={styles.label}>Vision</Text>
             <Text style={styles.sectionContent}>
               {schoolData.SchoolDetails.Vission}
             </Text>
@@ -250,7 +250,7 @@ export default function Welcome({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#EFB679",
+    backgroundColor: "#e4eef4",
     opacity: 0.8,
   },
   padding: {
