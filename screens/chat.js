@@ -1,46 +1,78 @@
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableHighlight,
-} from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useState, useCallback, useEffect } from 'react'
+import { GiftedChat } from 'react-native-gifted-chat'
 
-export default function Chat({ navigation }) {
-  const navigate = (screen) => {
-    navigation.navigate(screen);
-  };
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={{ width: "100%" }}>
-        <View style={{alignItems:'center'}}>
-          <Text style={{fontSize:18}}>Need Help? Message Us!</Text>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+
+
+var responses = {
+  'match':'You Send Match',
+  'search': "You send Search"
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FBEBDA",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 12,
-  },
-  headingOne: {
-    fontSize: 32,
-    fontWeight: "400",
-    paddingVertical: 20,
-  },
-  headingTwo: {
-    fontSize: 24,
-    fontWeight: "bold",
-    paddingBottom: 10,
-  },
-});
+export default function Chat() {
+  const [messages, setMessages] = useState([]);
+
+  
+
+  useEffect(() => {
+    setMessages([
+      {
+        _id: 1,
+        text: 'Hello developer',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'React Native',
+          avatar: 'https://placeimg.com/140/140/any',
+        },
+      },
+    ])
+  }, [])
+
+
+
+  const onSend = useCallback((messages = []) => {
+    setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+    let messageTxt = messages[0].text
+    let messages_tokens = messageTxt.toLowerCase().split(" ")
+    messages_tokens.forEach(function (msg, index) {
+      if (msg in responses){
+        setMessages(previousMessages => GiftedChat.append(previousMessages, [
+          {
+            _id: messages.length + 1,
+            text: responses[msg],
+            createdAt: new Date(),
+            user: {
+              _id: 2,
+              name: 'React Native',
+              avatar: 'https://placeimg.com/140/140/any',
+            },
+          },
+        ]))
+        return
+      }
+      setMessages(previousMessages => GiftedChat.append(previousMessages, [
+        {
+          _id: messages.length + 1,
+          text: "notfound",
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'React Native',
+            avatar: 'https://placeimg.com/140/140/any',
+          },
+        },
+      ]))
+    });
+  }, [])
+
+  return (
+    <GiftedChat
+      messages={messages}
+      onSend={messages => onSend(messages)}
+      user={{
+        _id: 1,
+      }}
+    />
+  )
+}

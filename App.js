@@ -31,7 +31,7 @@ import { AppStateContext } from "./Context";
 import CreateArticles from "./screens/add-article";
 import EditArticle from "./screens/edit-article";
 import About from "./screens/about";
-import ChatTest from "./screens/chat";
+import Chat from "./screens/chat";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -149,7 +149,7 @@ export default function App() {
         />
         <Drawer.Screen
         name="Help Chat"
-        component={ChatTest}
+        component={Chat}
         options={({navigation}) => headerLogo(navigation)}
         />
       </Drawer.Navigator>
