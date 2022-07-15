@@ -30,6 +30,8 @@ import MyArticles from "./screens/myarticles";
 import { AppStateContext } from "./Context";
 import CreateArticles from "./screens/add-article";
 import EditArticle from "./screens/edit-article";
+import About from "./screens/about";
+import ChatTest from "./screens/chat";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -139,6 +141,16 @@ export default function App() {
           name="Match Schools"
           component={MatchViewGroup}
           options={({ navigation }) => headerLogo(navigation)}
+        />
+        <Drawer.Screen
+          name="About Us"
+          component={About}
+          options={({ navigation }) => headerLogo(navigation)}
+        />
+        <Drawer.Screen
+        name="Help Chat"
+        component={ChatTest}
+        options={({navigation}) => headerLogo(navigation)}
         />
       </Drawer.Navigator>
     );
