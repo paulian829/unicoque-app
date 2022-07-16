@@ -42,7 +42,6 @@ export default function Welcome({ route, navigation }) {
     onValue(UniRef, (snapshot) => {
       let value = snapshot.val();
       setSchoolData(value);
-      console.log(value);
       setPrograms(value.ProgramsOffered);
     });
   }, [isFocused]);
