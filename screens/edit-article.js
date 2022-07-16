@@ -78,7 +78,7 @@ export default function EditArticle({ navigation, route }) {
     date = new Date(date);
 
     let data = {
-      articleImageURL: uri,
+      articleImageURL: uri ? uri : null,
       content: content,
       title: title,
       dateCreated: articlekey.dateCreated,
@@ -88,7 +88,7 @@ export default function EditArticle({ navigation, route }) {
     const updates = {};
     updates["/university/" + account.Uid + "/articles/" + key] = data;
     update(ref(db), updates).then(() => {
-      alert("Article Published");
+      alert("Article Updated!");
       navigation.navigate("Articles list");
     });
   };
