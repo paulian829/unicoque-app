@@ -52,7 +52,7 @@ export default function Chat() {
         user: {
           _id: 2,
           name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
+          avatar: "https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fdefault_profile.jpeg?alt=media&token=e8fc4a09-de30-4fb8-8416-168865072c13",
         },
       },
     ]);
@@ -68,7 +68,7 @@ export default function Chat() {
           user: {
             _id: 1,
             name: "React Native",
-            avatar: "https://placeimg.com/140/140/any",
+            avatar: "https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fdefault_profile.jpeg?alt=media&token=e8fc4a09-de30-4fb8-8416-168865072c13",
           },
         },
       ])
@@ -82,7 +82,7 @@ export default function Chat() {
         user: {
           _id: 2,
           name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
+          avatar: "https://firebasestorage.googleapis.com/v0/b/uniqueco-33e4c.appspot.com/o/app%2Fdefault_profile.jpeg?alt=media&token=e8fc4a09-de30-4fb8-8416-168865072c13",
         },
       },
     ])

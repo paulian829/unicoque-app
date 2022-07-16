@@ -57,7 +57,7 @@ export default function Profile({ navigation }) {
             icon="magnify"
             color={Colors.red500}
             size={30}
-            onPress={() =>     navigation.navigate("Search School", {screen:'Search'})
+            onPress={() =>     navigation.navigate("Search Schools", {screen:'Search'})
             }
           />
           <IconButton
