@@ -32,6 +32,7 @@ import CreateArticles from "./screens/add-article";
 import EditArticle from "./screens/edit-article";
 import About from "./screens/about";
 import Chat from "./screens/chat";
+import Map from "./screens/map"
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -148,9 +149,9 @@ export default function App() {
           options={({ navigation }) => headerLogo(navigation)}
         />
         <Drawer.Screen
-        name="Help Chat"
-        component={Chat}
-        options={({navigation}) => headerLogo(navigation)}
+          name="Help Chat"
+          component={Chat}
+          options={({ navigation }) => headerLogo(navigation)}
         />
       </Drawer.Navigator>
     );
@@ -335,6 +336,15 @@ export default function App() {
         <Stack.Screen
           name="Article"
           component={Article}
+          options={{
+            drawerItemStyle: { height: 0 },
+            headerShown: false,
+            swipeEdgeWidth: 0,
+          }}
+        />
+        <Stack.Screen
+          name="Map"
+          component={Map}
           options={{
             drawerItemStyle: { height: 0 },
             headerShown: false,
