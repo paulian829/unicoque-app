@@ -104,7 +104,7 @@ export default function Review({ route, navigation }) {
       <ScrollView>
         <Text style={styles.heading}>Reviews</Text>
        { 
-       account.type === 'Student' &&
+       account.type.toLowerCase() === 'student' &&
        <TextInput
           multiline={true}
           numberOfLines={4}
@@ -113,7 +113,7 @@ export default function Review({ route, navigation }) {
           onChangeText={(reviewText) => setReviewText(reviewText)}
         />}
         {
-          account.type === 'Student' &&
+          account.type.toLowerCase() === 'student' &&
           <View style={{ alignItems: "center" }}>
           <Stars
             default={reviewStar}

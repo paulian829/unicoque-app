@@ -127,33 +127,17 @@ export default function Favorite({ navigation }) {
         }
       />
       <Card.Content>
-        <Title>{schoolData[key].Name}</Title>
         <View
           style={{
             flex: 1,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            paddingTop:10
           }}
         >
-          <Stars
-            disabled={true}
-            default={getScore(schoolData[key].reviews)}
-            count={5}
-            fullStar={
-              <Icon name={"star"} size={40} style={[styles.myStarStyle]} />
-            }
-            emptyStar={
-              <Icon
-                name={"star-outline"}
-                size={40}
-                style={styles.myStarStyle}
-              />
-            }
-            halfStar={
-              <Icon name={"star-half"} size={40} style={[styles.myStarStyle]} />
-            }
-          />
+        <Title>{schoolData[key].Name}</Title>
+
           <Pressable onPress={() => updateFavorite(schoolData[key].Uid)}>
             <MaterialCommunityIcons
               name={checkIfFavorite(schoolData[key].Uid) ? "heart" : "heart-outline"}
@@ -162,6 +146,7 @@ export default function Favorite({ navigation }) {
             />
           </Pressable>
         </View>
+        <Paragraph>{schoolData[key].schoolType}</Paragraph>
 
         <Paragraph>{schoolData[key].Address.City}</Paragraph>
       </Card.Content>

@@ -117,7 +117,7 @@ export default function Welcome({ navigation }) {
             <TouchableHighlight
               style={styles.btn}
               onPress={() =>
-                navigation.navigate("Search School", { screen: "Search" })
+                navigation.navigate("Search Schools", { screen: "Search" })
               }
               activeOpacity={0.4}
               underlayColor="#e7decc"

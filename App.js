@@ -32,7 +32,7 @@ import CreateArticles from "./screens/add-article";
 import EditArticle from "./screens/edit-article";
 import About from "./screens/about";
 import Chat from "./screens/chat";
-import Map from "./screens/map"
+import Map from "./screens/map";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -239,6 +239,15 @@ export default function App() {
             swipeEdgeWidth: 0,
           }}
         />
+        <Stack.Screen
+          name="Map"
+          component={Map}
+          options={{
+            drawerItemStyle: { height: 0 },
+            headerShown: false,
+            swipeEdgeWidth: 0,
+          }}
+        />
       </Stack.Navigator>
     );
   };
@@ -285,6 +294,15 @@ export default function App() {
         <Stack.Screen
           name="Article"
           component={Article}
+          options={{
+            drawerItemStyle: { height: 0 },
+            headerShown: false,
+            swipeEdgeWidth: 0,
+          }}
+        />
+        <Stack.Screen
+          name="Map"
+          component={Map}
           options={{
             drawerItemStyle: { height: 0 },
             headerShown: false,

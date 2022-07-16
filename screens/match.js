@@ -168,16 +168,18 @@ export default function Match({ navigation }) {
         }
       />
       <Card.Content>
-        <Title>{schoolData[key].Name}</Title>
         <View
           style={{
             flex: 1,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            paddingTop:10
           }}
         >
-        {  account.type === 'Student' && 
+        <Title>{schoolData[key].Name}</Title>
+
+        {  account.type.toLowerCase() === 'student' && 
         <Pressable onPress={() => updateFavorite(schoolData[key].Uid)}>
             <MaterialCommunityIcons
               name={

@@ -20,7 +20,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Stars from "react-native-stars";
 
 import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
-import { getDatabase, ref, onValue , update} from "firebase/database";
+import { getDatabase, ref, onValue, update } from "firebase/database";
 import { AppStateContext } from "../Context";
 
 export default function Welcome({ navigation }) {
@@ -29,7 +29,7 @@ export default function Welcome({ navigation }) {
   const [originalData, setOriginalData] = useState([]);
   const isFocused = useIsFocused();
   const [liked, setLiked] = useState(false);
-  const {account} = useContext(AppStateContext);
+  const { account } = useContext(AppStateContext);
   const [favorite, setFavorite] = useState({});
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function Welcome({ navigation }) {
     let results = {};
     let search = searchValue;
     if (search.length === 0) {
-      setSchoolData({...originalData});
+      setSchoolData({ ...originalData });
       return;
     }
     for (let item in originalData) {
@@ -69,7 +69,7 @@ export default function Welcome({ navigation }) {
         results[item] = originalData[item];
       }
     }
-    setSchoolData({...results});
+    setSchoolData({ ...results });
   }, [searchValue]);
 
   const navigate = (screen) => {
@@ -103,22 +103,21 @@ export default function Welcome({ navigation }) {
   };
 
   const updateFavorite = (uid) => {
-    let favoriteObj = favorite
-    let status = favorite[uid]
+    let favoriteObj = favorite;
+    let status = favorite[uid];
 
     if (status) {
-      favoriteObj[uid] = !status
-    }else {
-      favoriteObj[uid] = uid
+      favoriteObj[uid] = !status;
+    } else {
+      favoriteObj[uid] = uid;
     }
-    
-    setFavorite({...favoriteObj})
+
+    setFavorite({ ...favoriteObj });
 
     const db = getDatabase();
     const updates = {};
     updates["/Account/" + account.Uid + "/Favorite/"] = favoriteObj;
     update(ref(db), updates).then(() => {
-
       ToastAndroid.showWithGravityAndOffset(
         "Favorites Updated!",
         ToastAndroid.SHORT,
@@ -127,9 +126,7 @@ export default function Welcome({ navigation }) {
         50
       );
     });
-
-
-  }
+  };
   const tifOptions = Object.keys(schoolData).map((key) => (
     <Card
       style={{ marginBottom: 20 }}
@@ -146,24 +143,30 @@ export default function Welcome({ navigation }) {
         }
       />
       <Card.Content>
-        <Title>{schoolData[key].Name}</Title>
         <View
           style={{
             flex: 1,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            paddingTop:10
           }}
         >
-          {
-            account.type === 'Student' &&
-            <Pressable onPress={() => updateFavorite(schoolData[key].Uid)} >
-            <MaterialCommunityIcons
-              name={checkIfFavorite(schoolData[key].Uid) ? "heart" : "heart-outline"}
-              size={32}
-              color={checkIfFavorite(schoolData[key].Uid) ? "red" : "black"}
-            />
-          </Pressable>}
+          <Title style={{maxWidth:'80%'}}>{schoolData[key].Name}</Title>
+
+          {account.type.toLowerCase() === "student" && (
+            <Pressable onPress={() => updateFavorite(schoolData[key].Uid)}>
+              <MaterialCommunityIcons
+                name={
+                  checkIfFavorite(schoolData[key].Uid)
+                    ? "heart"
+                    : "heart-outline"
+                }
+                size={32}
+                color={checkIfFavorite(schoolData[key].Uid) ? "red" : "black"}
+              />
+            </Pressable>
+          )}
         </View>
         <Paragraph>{schoolData[key].Address.City}</Paragraph>
 
@@ -171,8 +174,6 @@ export default function Welcome({ navigation }) {
       </Card.Content>
     </Card>
   ));
-
-
 
   return (
     <SafeAreaView style={styles.container}>
