@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { Switch, TextInput, IconButton, Colors } from 'react-native-paper';
 
 import {
@@ -6,7 +6,8 @@ import {
     SafeAreaView,
     ScrollView,
     Text,
-    View
+    View,
+    ToastAndroid
 
 } from "react-native";
 import { AppStateContext } from "../Context";
@@ -25,6 +26,8 @@ export default function chatSettings({ navigation, route }) {
     const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
     const { user, setUser } = useContext(AppStateContext);
     const [QnA, setQnA] = useState({});
+    const scrollViewRef = useRef();
+
 
 
     const [data, setData] = useState({})
@@ -67,11 +70,31 @@ export default function chatSettings({ navigation, route }) {
             />
         </View>
     ))
+    const addRow = () => {
+        let random =
+            Math.random().toString(36).substring(2) +
+            new Date().getTime().toString(36);
+
+        let QnAList = QnA
+        QnAList[random] = {
+            question: "Question goes here",
+            answer: "This is a response",
+        }
+        setQnA({ ...QnAList })
+        scrollViewRef.current.scrollToEnd({ animated: true })
+        ToastAndroid.showWithGravityAndOffset(
+            "Added new Item",
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            25,
+            50
+        );
+    }
 
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.innerContainer}>
+            <ScrollView style={styles.innerContainer} ref={scrollViewRef}>
                 <Text style={styles.headingOne}>Help Chat Settings</Text>
                 <View style={styles.topContainer}>
                     <Switch value={data.chatState} onValueChange={onToggleSwitch} />
@@ -91,33 +114,10 @@ export default function chatSettings({ navigation, route }) {
                         icon="plus-circle"
                         color={Colors.green400}
                         size={30}
-                        onPress={() => console.log('test')}
+                        onPress={() => addRow()}
                     />
                 </View>
                 {RenderList}
-                {/* <View style={{ marginBottom: 20, backgroundColor: "#FBFAF9", padding: 15, borderRadius: 10 }}>
-                    <View style={styles.topContainer}>
-                        <IconButton
-                            icon="minus-circle"
-                            color={Colors.red500}
-                            size={30}
-                            onPress={() => console.log('test')}
-                        />
-                        <Text style={styles.label}>Remove Q&A</Text>
-                    </View>
-                    <TextInput
-                        label="Question"
-                        multiline
-                        numberOfLines={3}
-                    />
-                    <TextInput
-                        style={{ marginTop: 10 }}
-                        label="Answer"
-                        multiline
-                        numberOfLines={3}
-                    />
-                </View> */}
-
             </ScrollView>
         </SafeAreaView>
     );

@@ -21,8 +21,6 @@ import * as DocumentPicker from "expo-document-picker";
 import {
   getDatabase,
   ref,
-  child,
-  push,
   update,
   onValue,
 } from "firebase/database";
@@ -30,7 +28,6 @@ import {
   getStorage,
   ref as storageRef,
   uploadBytes,
-  uploadString,
   getDownloadURL,
 } from "firebase/storage";
 import { AppStateContext } from "../Context";
