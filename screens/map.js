@@ -58,14 +58,12 @@ export default function Map({ route }) {
         setLat(item.longitude);
         console.log(lat);
         console.log(long);
-        return
+        return;
       }
     });
 
-
-    setLong(results.latitude)
-    setLat(results.longitude)
-
+    setLong(results.latitude);
+    setLat(results.longitude);
   };
 
   return (
@@ -83,7 +81,6 @@ export default function Map({ route }) {
           coordinate={{
             longitude: lat,
             latitude: long,
-
           }}
         />
       </MapView>
