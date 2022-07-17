@@ -16,8 +16,8 @@ export default function Map({ route }) {
   const isFocused = useIsFocused();
   const { account } = useContext(AppStateContext);
   const { key } = route.params;
-  const [lat, setLat] = useState(1);
-  const [long, setLong] = useState(1);
+  const [lat, setLat] = useState(121.6234);
+  const [long, setLong] = useState(13.9414);
 
   useEffect(() => {
     console.log(key);
@@ -62,8 +62,6 @@ export default function Map({ route }) {
       }
     });
 
-    setLong(results.latitude);
-    setLat(results.longitude);
   };
 
   return (
