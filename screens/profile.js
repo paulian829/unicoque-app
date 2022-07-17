@@ -27,7 +27,7 @@ export default function Profile({ navigation }) {
   const [profilePic, setProfilePic] = useState(null);
   const [file, setFile] = useState(null);
 
-  const {account, setAccount} = useContext(AppStateContext);
+  const { account, setAccount } = useContext(AppStateContext);
   const [loading, setLoading] = useState(false);
   const [loadingBtn, setLoadingBtn] = useState("SAVE PROFILE");
 
@@ -57,7 +57,7 @@ export default function Profile({ navigation }) {
             icon="magnify"
             color={Colors.red500}
             size={30}
-            onPress={() =>     navigation.navigate("Search Schools", {screen:'Search'})
+            onPress={() => navigation.navigate("Search Schools", { screen: 'Search' })
             }
           />
           <IconButton
@@ -118,14 +118,14 @@ export default function Profile({ navigation }) {
 
         });
       }).catch(() => console.log("Error"));
-    }else{
+    } else {
       updateDatabase()
     }
 
 
   };
   const updateDatabase = (downloadURL) => {
-    if(file){
+    if (file) {
       data['profilePic'] = downloadURL
     }
     const db = getDatabase();
@@ -168,21 +168,21 @@ export default function Profile({ navigation }) {
             editable={false}
           />
           <TextInput
-          label={'Firstname'}
+            label={'Firstname'}
             value={data.firstName}
             style={styles.input}
             onChangeText={(firstName) => updateData(firstName, "firstName")}
             onSubmitEditing={Keyboard.dismiss}
           />
           <TextInput
-          label={'Lastname'}
+            label={'Lastname'}
             value={data.lastName}
             style={styles.input}
             onChangeText={(lastName) => updateData(lastName, "lastName")}
             onSubmitEditing={Keyboard.dismiss}
           />
           <TextInput
-          label={"Contact Number"}
+            label={"Contact Number"}
             value={data.contactNumber}
             style={styles.input}
             onChangeText={(contactNumber) =>
@@ -191,14 +191,14 @@ export default function Profile({ navigation }) {
             onSubmitEditing={Keyboard.dismiss}
           />
           <TextInput
-          label={'Account Type'}
+            label={'Account Type'}
             value={data.type}
             style={styles.inputDisabled}
             onSubmitEditing={Keyboard.dismiss}
             editable={false}
           />
           <TextInput
-          label={'Date Created'}
+            label={'Date Created'}
             value={textSlice(account.dateCreated)}
             style={styles.inputDisabled}
             onSubmitEditing={Keyboard.dismiss}

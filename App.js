@@ -33,6 +33,7 @@ import EditArticle from "./screens/edit-article";
 import About from "./screens/about";
 import Chat from "./screens/chat";
 import Map from "./screens/map";
+import chatSettings from "./screens/chat-settings";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -116,7 +117,6 @@ export default function App() {
               ? ({ navigation }) => headerLogo(navigation)
               : { drawerItemStyle: { height: 0 } }
           }
-          // options = {({navigation})=>headerLogo(navigation)}
         />
         <Drawer.Screen
           name="Favorites"
@@ -131,6 +131,15 @@ export default function App() {
         <Drawer.Screen
           name="My Articles"
           component={MyArticlesGroup}
+          options={
+            type === "university"
+              ? ({ navigation }) => headerLogo(navigation)
+              : { drawerItemStyle: { height: 0 } }
+          }
+        />
+        <Drawer.Screen
+          name="Chat Settings"
+          component={chatSettings}
           options={
             type === "university"
               ? ({ navigation }) => headerLogo(navigation)
