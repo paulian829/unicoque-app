@@ -85,7 +85,7 @@ export default function Welcome({ navigation }) {
 
   const downloadUniData = () => (event) => {
     const db = getDatabase();
-    const UniRef = ref(db, "University/" + user.uid);
+    const UniRef = ref(db, "university/" + user.uid);
     onValue(UniRef, (snapshot) => {
       const data = snapshot.val();
       setUniversity({ ...data });
