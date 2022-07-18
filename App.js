@@ -34,6 +34,7 @@ import About from "./screens/about";
 import Chat from "./screens/chat";
 import Map from "./screens/map";
 import chatSettings from "./screens/chat-settings";
+import UniChat from "./screens/uni-chat";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -372,6 +373,15 @@ export default function App() {
         <Stack.Screen
           name="Map"
           component={Map}
+          options={{
+            drawerItemStyle: { height: 0 },
+            headerShown: false,
+            swipeEdgeWidth: 0,
+          }}
+        />
+                <Stack.Screen
+          name="UniChat"
+          component={UniChat}
           options={{
             drawerItemStyle: { height: 0 },
             headerShown: false,
